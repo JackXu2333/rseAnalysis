@@ -17,6 +17,10 @@ DNA2RNA <- function(DNA.Seq){
 
   DNAbase <- c("T", "A", "C", "G")
 
+  if (typeof(DNA.Seq) != "character"){
+    stop("Invalidated input type")
+  }
+
   #Validate DNASeq
   DNASeqList <- seqinr::s2c(DNA.Seq)
 
@@ -78,7 +82,10 @@ DNA2RNA <- function(DNA.Seq){
 #' }
 #'
 #' @examples
-#' \dontrun{}
+#' \dontrun{mutated <- RNA.validate(
+#'               fasta = fasta2df("./test.fasta"),
+#'               vcf = vcf2df("./test.vcf",
+#'               bed = bed2df("./test.bed"))}
 #'
 #' @author Sijie Xu, \email{sijie.xu@mail.utoronto.ca}
 #'

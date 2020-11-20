@@ -32,13 +32,13 @@
 #' Biopolymers, 49:145-165.
 predict.Structure <- function (executable.path = "", fasta.file = "", name = c(), seq = c()) {
 
-  AllSub.path <- paste(executable.path, "Allsub", sep = "")
-  ct2dot.path <- paste(executable.path, "ct2dot", sep = "")
+  AllSub.path <- paste(executable.path, "/Allsub", sep = "")
+  ct2dot.path <- paste(executable.path, "/ct2dot", sep = "")
 
   #Validate Input
   if (!file.exists(AllSub.path) || !file.exists(ct2dot.path)){
     stop("Structural prediction method unavailable")
-  } else if (!file.exists(fasta.file)){
+  } else if (!missing(fasta.file) && !file.exists(fasta.file)){
     stop("fasta file unavailable")
   } else if (missing(fasta.file) && missing(name) && missing(seq)){
     stop("Input file unavailable")
@@ -46,8 +46,12 @@ predict.Structure <- function (executable.path = "", fasta.file = "", name = c()
     stop("Must input both name and sequence")
   }
 
-  if (length(name) != length(seq)){
-    stop("Name and Sequence does not share the same length")
+  if (missing(fasta.file)){
+    if (length(name) != length(seq)){
+      stop("Name and Sequence does not share the same length")
+    } else if (typeof(name) != "character" ||  typeof(seq) != "character"){
+      stop("Invalidate name or seq type")
+    }
   }
 
   #Create new folder to store temperary files
@@ -57,7 +61,7 @@ predict.Structure <- function (executable.path = "", fasta.file = "", name = c()
   if (!missing(fasta.file)){
     fasta <- fasta2df(fasta.file)
   } else {
-    fasta <- data.frame(name = name, sequence = seq)
+    fasta <- data.frame(NAME = name, SEQ = seq)
   }
 
   #Create empty list to store the outcome
@@ -73,7 +77,7 @@ predict.Structure <- function (executable.path = "", fasta.file = "", name = c()
     dot.filename <- paste("./temp/", i, ".dot", sep="")
 
     #Generate single line fasta file
-    cat(">", fasta$name[i], "\n", fasta$sequence[i], "\n", sep="", file=fa.filename)
+    cat(">", fasta$NAME[i], "\n", fasta$SEQ[i], "\n", sep="", file=fa.filename)
 
     #Predict Secondary Structure
     system(paste(AllSub.path, fa.filename, ct.filename, sep=" "))
@@ -145,6 +149,8 @@ predict.distance <- function(executable.path = "", name = c(), ori = c(), alt = 
 
   if (length(name) != length(ori) || length(name) != length(alt)){
     stop("Name and Sequence does not share the same length")
+  } else if (typeof(name) != "character" ||  typeof(ori) != "character" ||  typeof(alt) != "character"){
+    stop("Invalidate input type")
   }
 
   #Create new folder to store temperary files

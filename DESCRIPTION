@@ -1,11 +1,11 @@
-Package: dseAnalysis
+Package: rseAnalysis
 Type: Package
-Title: Correlation analysis of DNA differential expression and secondary structure mutation
+Title: Correlation analysis of RNA secondary structure mutation and differential expression 
 Version: 0.1.0
 Author: Sijie Xu
 Maintainer: Sijie Xu <sijie.xu@mail.utoronto.ca>
-Description: dseAnalysis (DNA structure and Expression analysis) is an R package for performing 
-    correlation analysis of DNA differential expression and secondary structure mutation
+Description: rseAnalysis (RNA structure and Expression analysis) is an R package for performing 
+    correlation analysis of RNA differential expression and secondary structure mutation
 License: License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -21,3 +21,5 @@ Imports:
     tidyr,
     reshape
 RoxygenNote: 7.1.1
+Suggests: 
+    testthat

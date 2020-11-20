@@ -11,6 +11,10 @@ fasta2df(filepath)
 }
 \value{
 Return a data.frame object contain fasta document loaded
+\itemize{
+  \item NAME - Corresponding of the RNA sequence
+  \item SEQ - The original RNA sequence
+}
 }
 \description{
 Perform fasta file retrieving using readRNAStringSet function from Biostrings, result stored

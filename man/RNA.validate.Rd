@@ -39,13 +39,15 @@ and fasta2df file, function gives validation based on fasta
 and vcf comparisons, user should user validation result to make
 sure their vcf and fasta file are aligned under same version.
 Algorithm inspired by the mRNA mutation function, a utility function
-created in <https://github.com/Deemolotus/BCB330Y-and-BCB430Y>
-author: Sijie Xu, the updated method here is a more generalized
+created by Sijie Xu and Zhiwen Tan, the updated method here is a more generalized
 and input validated method, more checking are embeded to insure the
 mutation is applied correctly.
 }
 \examples{
-\dontrun{}
+\dontrun{mutated <- RNA.validate(
+              fasta = fasta2df("./test.fasta"),
+              vcf = vcf2df("./test.vcf",
+              bed = bed2df("./test.bed"))}
 
 }
 \references{

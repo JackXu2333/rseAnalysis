@@ -11,6 +11,16 @@ bed2df(filepath)
 }
 \value{
 Return a data.frame object contain bed document loaded
+\itemize{
+  \item CHROM - Located in chromosome CHROM
+  \item STAPOS - The start location of the sequence
+  \item ENDPOS - The end location of the sequence
+  \item DIR - The direction of the sequence
+  \item TYPE - The type of the sequence
+  \item ID - ID of the RNA (if avilable)
+  \item ALIAS - The alias of the sequence
+  \item NAME - The name of the sequence
+}
 }
 \description{
 Perform bed file retrieving using result stored

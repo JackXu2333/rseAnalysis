@@ -11,6 +11,17 @@ vcf2df(filepath)
 }
 \value{
 Return a data.frame object contain vcf document loaded
+\itemize{
+  \item CHROM - Located in chromosome CHROM
+  \item POS - The start position of the mutation
+  \item ID - ID of the mutation (if available)
+  \item REF - The reference base(s) on the mutation point
+  \item ALT - The alternative base(s) appeared in during mutation
+  \item CONSEQUENCE - Record the effect of mutation under biological studies
+  \item OCCURRENCE - Record the associated cancer and its distribution
+  \item affected_donors - Record the total number of donor affected
+  \item project_count - Number of project associated with current studies
+}
 }
 \description{
 Perform vcf file retrieving using read.vcfR function, result stored
