@@ -21,7 +21,7 @@ Analysis.DISEXP(
 
 \item{exp.sample}{Set of reads from gene expression from normal samples (usually blood sample)}
 
-\item{method}{Selection of linear or possion (log link) function for regression}
+\item{method}{Selection of linear or gaussian log link function for regression}
 }
 \value{
 Show of four graph for validation, includes
@@ -45,8 +45,9 @@ and analysis result validation.
 }
 \examples{
 \dontrun{disexp <- Analysis.DISEXP(
-             dis.name = c("hsa-let-7a-1", "hsa-let-7a-1", "hsa-let-7a-3", "hsa-let-7a-3", "hsa-let-7a-3"),
-             dis.distance = c(10, 35, 91, 100, 92, 5),
+             dis.name = c("hsa-let-7a-1", "hsa-let-7a-1",
+             "hsa-let-7a-3", "hsa-let-7a-3", "hsa-let-7a-3"),
+             dis.distance = as.integer(c(10, 35, 91, 100, 92, 5)),
              exp.tumor = c(98691, 49201, 57540, 148702, 97721),
              exp.sample = c(23495, 23310, 13274, 19337, 14389))}
 

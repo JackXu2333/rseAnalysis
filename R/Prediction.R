@@ -9,15 +9,15 @@
 #'
 #' @param executable.path The path referred to RNAStructure executable (.../RNAStructure/exe) used by program
 #' @param fasta.file The file path with mature sequences in fasta format
-#' @param name List consisted with name of the RNA sequence in seq
-#' @param seq List consisted with RNA sequence
+#' @param rna.name List consisted with name of the RNA sequence in seq
+#' @param rna.seq List consisted with RNA sequence
 #'
 #' @return Returns a list of dot bracket form, ordered according to the input name sequence
 #'
 #' @examples
 #' \dontrun{dot <- predict.Structure(executable.path = "./exe"
-#'                                  , name = c("hsa-let-7b", "hsa-let-7a-2")
-#'                                  , seq = c("UGGGAUGAGGUGGAUGUCUUUCCUA", "GAUAACUAUACAAUCUAC"))}
+#'                                  , rna.name = c("hsa-let-7b", "hsa-let-7a-2")
+#'                                  , rna.seq = c("UGGGAUGAGGUGGAUGUCUUUCCUA", "GAUAACUAUACAAUCUAC"))}
 #'
 #' @author Sijie Xu, \email{sijie.xu@mail.utoronto.ca}
 #'
@@ -30,7 +30,7 @@
 #' Wuchty, S., Fontana, W., Hofacker, I.L. and Schuster, P. (1999).
 #' Complete suboptimal folding of RNA and the stability of secondary structures.
 #' Biopolymers, 49:145-165.
-predict.Structure <- function (executable.path = "", fasta.file = "", name = c(), seq = c()) {
+predict.Structure <- function (executable.path = "", fasta.file = "", rna.name = c(), rna.seq = c()) {
 
   AllSub.path <- paste(executable.path, "/Allsub", sep = "")
   ct2dot.path <- paste(executable.path, "/ct2dot", sep = "")
@@ -40,16 +40,16 @@ predict.Structure <- function (executable.path = "", fasta.file = "", name = c()
     stop("Structural prediction method unavailable")
   } else if (!missing(fasta.file) && !file.exists(fasta.file)){
     stop("fasta file unavailable")
-  } else if (missing(fasta.file) && missing(name) && missing(seq)){
+  } else if (missing(fasta.file) && missing(rna.name) && missing(rna.seq)){
     stop("Input file unavailable")
-  } else if (missing(fasta.file) && (missing(name) || missing(seq))){
+  } else if (missing(fasta.file) && (missing(rna.name) || missing(rna.seq))){
     stop("Must input both name and sequence")
   }
 
   if (missing(fasta.file)){
-    if (length(name) != length(seq)){
+    if (length(rna.name) != length(rna.seq)){
       stop("Name and Sequence does not share the same length")
-    } else if (typeof(name) != "character" ||  typeof(seq) != "character"){
+    } else if (typeof(rna.name) != "character" ||  typeof(rna.seq) != "character"){
       stop("Invalidate name or seq type")
     }
   }
@@ -61,7 +61,7 @@ predict.Structure <- function (executable.path = "", fasta.file = "", name = c()
   if (!missing(fasta.file)){
     fasta <- fasta2df(fasta.file)
   } else {
-    fasta <- data.frame(NAME = name, SEQ = seq)
+    fasta <- data.frame(NAME = rna.name, SEQ = rna.seq)
   }
 
   #Create empty list to store the outcome
@@ -118,17 +118,17 @@ predict.Structure <- function (executable.path = "", fasta.file = "", name = c()
 #'
 #' @param executable.path The path referred to RNADistance executable (.../RNADistance) used by program
 #' @param name List consisted with name of the RNA sequence in seq
-#' @param seq List consisted with RNA orginal sequence
-#' @param alt List consisted with RNA alternative sequence
+#' @param seq.ori List consisted with RNA orginal sequence
+#' @param seq.alt List consisted with RNA alternative sequence
 #'
 #' @return Returns a list of RNA distance, ordered according to the input name sequence
 #'
 #' @examples
 #' \dontrun{dot <- calculate.distance(name = c("hsa-let-7b", "hsa-let-7a-2")
-#'                                  , ori = c("(((((.((((((((((((((((((((((((((((((.....))).)))).))).....)))))))))))))))))))))))))",
-#'                                            "(((((.((((((((((((((((((((((((((((((.....))).)))).))).....)))))))))))))))))))))))))")
-#'                                  , alt = c("(((((.(((((((((((((((((((..(((((((((.....)))))).).....))...))))))))))))))))))))))))",
-#'                                            "(((((.((((((((.(((((((((((((((((((((.....)))))).).))).....))))))))))).)))))))))))))"))}
+#' , seq.ori = c("(((((.((((((((((((((((((((((((((((((.....))).)))).))).....)))))))))))))))))))))))))",
+#'           "(((((.((((((((((((((((((((((((((((((.....))).)))).))).....)))))))))))))))))))))))))")
+#' , seq.alt = c("(((((.(((((((((((((((((((..(((((((((.....)))))).).....))...))))))))))))))))))))))))",
+#'            "(((((.((((((((.(((((((((((((((((((((.....)))))).).))).....))))))))))).)))))))))))))"))}
 #'
 #' @author Sijie Xu, \email{sijie.xu@mail.utoronto.ca}
 #'
@@ -136,10 +136,10 @@ predict.Structure <- function (executable.path = "", fasta.file = "", name = c()
 #'
 #' Lorenz, Ronny and Bernhart, Stephan H. and Höner zu Siederdissen, Christian and Tafer, Hakim and Flamm, Christoph and Stadler, Peter F. and Hofacker, Ivo L.
 #' ViennaRNA Package 2.0 Algorithms for Molecular Biology, 6:1 26, 2011, doi:10.1186/1748-7188-6-26
-predict.distance <- function(executable.path = "", name = c(), ori = c(), alt = c()){
+predict.distance <- function(executable.path = "", name = c(), seq.ori = c(), seq.alt = c()){
 
   #Validate Input
-  if (missing(name) || missing(ori) || missing(alt)){
+  if (missing(name) || missing(seq.ori) || missing(seq.alt)){
     stop("Input file unavailable")
   } else if (Sys.which("RNADistance") == "" &&  executable.path == ""){
     stop("Unable to find RNADistance installation")
@@ -147,9 +147,9 @@ predict.distance <- function(executable.path = "", name = c(), ori = c(), alt = 
     executable.path = "RNADistance"
   }
 
-  if (length(name) != length(ori) || length(name) != length(alt)){
+  if (length(name) != length(seq.ori) || length(name) != length(seq.alt)){
     stop("Name and Sequence does not share the same length")
-  } else if (typeof(name) != "character" ||  typeof(ori) != "character" ||  typeof(alt) != "character"){
+  } else if (typeof(name) != "character" ||  typeof(seq.ori) != "character" ||  typeof(seq.alt) != "character"){
     stop("Invalidate input type")
   }
 
@@ -157,7 +157,7 @@ predict.distance <- function(executable.path = "", name = c(), ori = c(), alt = 
   dir.create("temp")
 
   #Constructe Object to store input
-  fasta <- data.frame(name = name, orginal = ori, alternative = alt)
+  fasta <- data.frame(name = name, orginal = seq.ori, alternative = seq.alt)
 
   #Create empty list to store the outcome
   dis.list <- rep(0, nrow(fasta))

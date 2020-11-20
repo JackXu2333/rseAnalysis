@@ -20,7 +20,7 @@
 #'
 #'
 #' @examples
-#' vcf2df("./test.vcf")
+#' \dontrun{vcf2df("./test.vcf")}
 #'
 #' @author Sijie Xu, \email{sijie.xu@mail.utoronto.ca}
 #'
@@ -77,7 +77,7 @@ vcf2df <- function(filepath) {
 #'
 #'
 #' @examples
-#' fasta2df("./test.fasta")
+#' \dontrun{fasta2df("./test.fasta")}
 #'
 #' @author Sijie Xu, \email{sijie.xu@mail.utoronto.ca}
 #'
@@ -136,11 +136,12 @@ fasta2df <- function(filepath) {
 #'
 #'
 #' @examples
-#' bed2df("./test.bed")
+#' \dontrun{ bed2df("./test.bed")}
 #'
 #' @author Sijie Xu, \email{sijie.xu@mail.utoronto.ca}
 #'
 #' @importFrom tidyr separate
+#' @importFrom utils read.table
 #'
 bed2df <- function(filepath){
 
@@ -156,7 +157,7 @@ bed2df <- function(filepath){
   }
 
   #Read entire file, separate the other info column
-  bed <- read.table(filepath, header = FALSE, sep="\t",stringsAsFactors=FALSE, quote="")
+  bed <- utils::read.table(filepath, header = FALSE, sep="\t",stringsAsFactors=FALSE, quote="")
   bed <- tidyr::separate(data = bed, col = "V10", into = c("ID", "Alias", "Name"), sep = ";")
 
   #Rename the tables

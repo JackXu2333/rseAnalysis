@@ -28,7 +28,7 @@ Perform vcf file retrieving using read.vcfR function, result stored
 in standarlize data.frame for easy usage.
 }
 \examples{
-vcf2df("./test.vcf")
+\dontrun{vcf2df("./test.vcf")}
 
 }
 \references{

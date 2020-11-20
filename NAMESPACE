@@ -2,9 +2,12 @@
 
 export(fasta2df)
 export(vcf2df)
-import(dplyr)
 import(ggplot2)
 importFrom(Biostrings,readRNAStringSet)
+importFrom(gridExtra,grid.arrange)
+importFrom(stats,gaussian)
+importFrom(stats,glm)
 importFrom(tidyr,separate)
 importFrom(tools,file_ext)
+importFrom(utils,read.table)
 importFrom(vcfR,read.vcfR)

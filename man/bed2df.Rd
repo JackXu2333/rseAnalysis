@@ -27,7 +27,7 @@ Perform bed file retrieving using result stored
 in standardized list for easy usage.
 }
 \examples{
-bed2df("./test.bed")
+\dontrun{ bed2df("./test.bed")}
 
 }
 \author{

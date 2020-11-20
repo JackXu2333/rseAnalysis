@@ -4,16 +4,16 @@
 \alias{predict.Structure}
 \title{Return list of predicted secondary structure}
 \usage{
-\method{predict}{Structure}(executable.path = "", fasta.file = "", name = c(), seq = c())
+\method{predict}{Structure}(executable.path = "", fasta.file = "", rna.name = c(), rna.seq = c())
 }
 \arguments{
 \item{executable.path}{The path referred to RNAStructure executable (.../RNAStructure/exe) used by program}
 
 \item{fasta.file}{The file path with mature sequences in fasta format}
 
-\item{name}{List consisted with name of the RNA sequence in seq}
+\item{rna.name}{List consisted with name of the RNA sequence in seq}
 
-\item{seq}{List consisted with RNA sequence}
+\item{rna.seq}{List consisted with RNA sequence}
 }
 \value{
 Returns a list of dot bracket form, ordered according to the input name sequence
@@ -28,8 +28,8 @@ omit.
 }
 \examples{
 \dontrun{dot <- predict.Structure(executable.path = "./exe"
-                                 , name = c("hsa-let-7b", "hsa-let-7a-2")
-                                 , seq = c("UGGGAUGAGGUGGAUGUCUUUCCUA", "GAUAACUAUACAAUCUAC"))}
+                                 , rna.name = c("hsa-let-7b", "hsa-let-7a-2")
+                                 , rna.seq = c("UGGGAUGAGGUGGAUGUCUUUCCUA", "GAUAACUAUACAAUCUAC"))}
 
 }
 \references{

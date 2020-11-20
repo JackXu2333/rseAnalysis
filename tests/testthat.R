@@ -1,4 +1,4 @@
 library(testthat)
-library(dseAnalysis)
+library(rseAnalysis)
 
-test_check("dseAnalysis")
+test_check("rseAnalysis")

@@ -10,7 +10,7 @@
 #' @param dis.distance Set of RNA distance between mutate and original data
 #' @param exp.tumor Set of reads from gene expression from tumor samples
 #' @param exp.sample Set of reads from gene expression from normal samples (usually blood sample)
-#' @param method Selection of linear or possion (log link) function for regression
+#' @param method Selection of linear or gaussian log link function for regression
 #'
 #' @return Show of four graph for validation, includes
 #' \itemize{
@@ -25,74 +25,89 @@
 #' }
 #'
 #' @examples \dontrun{disexp <- Analysis.DISEXP(
-#'              dis.name = c("hsa-let-7a-1", "hsa-let-7a-1", "hsa-let-7a-3", "hsa-let-7a-3", "hsa-let-7a-3"),
-#'              dis.distance = c(10, 35, 91, 100, 92, 5),
+#'              dis.name = c("hsa-let-7a-1", "hsa-let-7a-1",
+#'              "hsa-let-7a-3", "hsa-let-7a-3", "hsa-let-7a-3"),
+#'              dis.distance = as.integer(c(10, 35, 91, 100, 92, 5)),
 #'              exp.tumor = c(98691, 49201, 57540, 148702, 97721),
 #'              exp.sample = c(23495, 23310, 13274, 19337, 14389))}
 #'
 #' @author Sijie Xu, \email{sijie.xu@mail.utoronto.ca}
 #'
-#' @import dplyr
 #' @import ggplot2
+#' @importFrom gridExtra grid.arrange
+#' @importFrom stats gaussian glm
 Analysis.DISEXP <- function(dis.name, dis.distance, exp.tumor, exp.sample, method = "linear"){
 
   #Validate input
-  if (typeof(dis.name) != "list" || typeof(dis.distance) != "list"
-      || typeof(exp.tumor) != "list" || typeof(exp.sample) != "list"){
+  if (typeof(dis.name) != "character" || typeof(dis.distance) != "integer"
+      || typeof(exp.tumor) != "double" || typeof(exp.sample) != "double"){
     stop("Input must be packaged in list")
   } else if (length(dis.name) != length(dis.distance)){
     stop("RNA Distance data does not share the same size")
   } else if (length(exp.tumor) != length(exp.sample)){
     stop("Gene expression data does not share the same size")
-  } else if (!method %in% c("linear", "poisson")){
-    stop("select method from linear, possion")
+  } else if (length(dis.name) != length(exp.tumor)){
+    stop("RNA Distance and Gene expression data is misaligned")
+  } else if (!method %in% c("linear", "log")){
+    stop("select method from linear, log")
   }
 
   #Constructs the distance and expression data frame
-  dis <- data.frame(name = dis.name, distance = dis.distance, read_tumor = exp.tumor, read_sample = exp.sample)
-
-  disexp.df <- merge(dis, exp, by="name")
+  disexp.df <- data.frame(name = dis.name, distance = dis.distance, read_tumor = exp.tumor, read_sample = exp.sample)
 
   #Calculate the difference in read from sample to tumor
   disexp.df$read_diff <- abs(disexp.df$read_sample - disexp.df$read_tumor)
 
   #Perform correlation analysis based on the difference gene expression and RNA distance
   #Plot the diagonise plots
-  par(mfrow=c(1,2))
 
-  #Scatter plot with distance as x and difference in read being y
-  ggplot2::ggplot(disexp.df, ggplot2::aes(x=distance, y=read_diff)) +
-    ggplot2::geom_point() +
-    ggplot2::geom_smooth(method=lm)
+  if (method == "linear"){
+    #Scatter plot with distance as x and difference in read being y
+    scatter <- ggplot2::ggplot(disexp.df, ggplot2::aes_string(y="read_diff", x="distance")) +
+      ggplot2::geom_point() +
+      ggplot2::geom_smooth(formula = y ~ x, method="lm")
+  } else {
+    #Scatter plot with glm and log linkage
+    scatter <- ggplot2::ggplot(disexp.df, ggplot2::aes_string(y="read_diff", x="distance")) +
+      ggplot2::geom_point() +
+      ggplot2::geom_smooth(method = "glm", formula = y~x, method.args = list(family = stats::gaussian(link = 'log')))
+  }
 
   #Boxplot checking outliars on read_diff
-  ggplot2::ggplot(disexp.df, ggplot2::aes(x=name, y=read_diff)) +
+  box.genexp <- ggplot2::ggplot(disexp.df, ggplot2::aes_string(x="name", y="read_diff")) +
     ggplot2::geom_boxplot(outlier.colour="red", outlier.shape=8,
                  outlier.size=4)
 
   #Boxplot checking outliars on distance
-  ggplot2::ggplot(disexp.df, ggplot2::aes(x=name, y=distance)) +
+  box.dis <- ggplot2::ggplot(disexp.df, ggplot2::aes_string(x="name", y="distance")) +
     ggplot2::geom_boxplot(outlier.colour="red", outlier.shape=8,
                  outlier.size=4)
 
   #Density plot on distance by different RNA
-  ggplot2::ggplot(disexp.df, ggplot2::aes(x=distance, color=name)) +
+  density.dis <- ggplot2::ggplot(disexp.df, ggplot2::aes_string(x="distance", color="name")) +
     ggplot2::geom_density()
+
+  #Density plot on read_diff by different RNA
+  density.genexp <- ggplot2::ggplot(disexp.df, ggplot2::aes_string(x="read_diff", color="name")) +
+    ggplot2::geom_density()
+
+  #Generate the plots
+  plot(gridExtra::grid.arrange(scatter, density.dis, box.genexp, box.dis, ncol=2, nrow=2))
 
   if (method == "linear"){
     #Perform linear modeling on the object
     lm <- lm(read_diff ~ distance, data=disexp.df)
 
     #Calculate result from linear modeling
-    disexp.attr <- data.frame(corrolation = cor(disexp.df$distance, disexp.df$read_diff),
+    disexp.attr <- data.frame(correlation = stats::cor(disexp.df$distance, disexp.df$read_diff),
                             p_value = summary(lm)$coefficients[,4][2])
   } else {
 
     #Perfom glm modeling on the object
-    lm <- glm(read_diff ~ distance, data=disexp.df, family=poisson())
+    lm <- stats::glm(read_diff ~ distance, data=disexp.df, stats::gaussian(link="log"))
 
     #Calculate result from linear modeling
-    disexp.attr <- data.frame(corrolation = summary(lm)$coefficients[,1][2],
+    disexp.attr <- data.frame(correlation = summary(lm)$coefficients[,1][2],
                               p_value = summary(lm)$coefficients[,4][2])
 
   }

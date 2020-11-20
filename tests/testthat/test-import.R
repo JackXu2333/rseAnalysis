@@ -1,5 +1,5 @@
 context("import function for file import")
-library(dseAnalysis)
+library(rseAnalysis)
 
 test_that("vcf2df file loading", {
 

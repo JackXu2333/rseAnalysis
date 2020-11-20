@@ -37,7 +37,7 @@ DNA2RNA <- function(DNA.Seq){
   #Transcript the DNA
   DNASeqList[which(DNASeqList == "T")] <- "U"
 
-  return(DNASeqList)
+  return(gsub(", ", "", toString(DNASeqList)))
 
 }
 
@@ -93,8 +93,33 @@ DNA2RNA <- function(DNA.Seq){
 #'
 RNA.validate <- function(fasta, vcf, bed){
 
+  #validate input type
+  if (typeof(fasta) != "list" || typeof(vcf) != "list" || typeof(bed) != "list"){
+    stop("invalidated fasta type")
+  }
+
+  #Validate fasta input
+  if (any(!c("NAME", "SEQ") %in% names(fasta))) {
+    stop("corrupted fasta input")
+  }
+
+  #Validate fasta input
+  if (any(!c("CHROM", "STAPOS", "ENDPOS", "DIR", "NAME") %in% names(bed))) {
+    stop("corrupted bed input")
+  }
+
+  #Validate vcf input
+  if (any(!c("CHROM", "POS", "REF", "ALT") %in% names(vcf))) {
+    stop("corrupted vcf input")
+  }
+
+  #Validate input size
+  if (nrow(fasta) == 0 || nrow(bed) == 0  || nrow(vcf) == 0 ){
+    stop("empty data found")
+  }
+
   #Merge bed and fasta file to retrieve RNA sequence and location
-  RNA <- merge(bed, fasta, by.x="NAME")
+  RNA <- merge(bed, fasta, by="NAME")
 
   #Private function to find the reference sequence on the target location
   RNA.find <- function(sequence, startPos, pointPos, orgin){
