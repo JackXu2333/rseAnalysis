@@ -17,5 +17,7 @@ Imports:
     seqinr,
     vcfR,
     tools,
-    Biostrings
+    Biostrings,
+    tidyr,
+    reshape
 RoxygenNote: 7.1.1

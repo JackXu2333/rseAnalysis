@@ -1,23 +1,39 @@
-# Hello, world!
-#
-# This is an example function named 'hello'
-# which prints 'Hello, world!'.
-#
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Install Package:           'Cmd + Shift + B'
-#   Check Package:             'Cmd + Shift + E'
-#   Test Package:              'Cmd + Shift + T'
+#' Return list of predicted secondary structure
+#'
+#' Perform RNA structural prediction based on fasta file or
+#' input of RNA name and sequence. Secondary structure prediction
+#' algorithm based on command line program RNAStructure from
+#' Mathews Lab, program require current path to the executable,
+#' MacOS or Unix based user installed entire package is allowed to
+#' omit.
+#'
+#' @param executable.path The path referred to RNAStructure executable (.../RNAStructure/exe) used by program
+#' @param fasta.file The file path with mature sequences in fasta format
+#' @param name List consisted with name of the RNA sequence in seq
+#' @param seq List consisted with RNA sequence
+#'
+#' @return Returns a list of dot bracket form, ordered according to the input name sequence
+#'
+#' @examples
+#' \dontrun{dot <- predict.Structure(executable.path = "./exe"
+#'                                  , name = c("hsa-let-7b", "hsa-let-7a-2")
+#'                                  , seq = c("UGGGAUGAGGUGGAUGUCUUUCCUA", "GAUAACUAUACAAUCUAC"))}
+#'
+#' @author Sijie Xu, \email{sijie.xu@mail.utoronto.ca}
+#'
+#' @references
+#'
+#' Duan, S., Mathews, D.H. and Turner, D.H. (2006).
+#' Interpreting oligonucleotide microarray data to determine RNA secondary structure: application to the 3' end of Bombyx mori R2 RNA.
+#' Biochemistry, 45:9819-9832.
+#'
+#' Wuchty, S., Fontana, W., Hofacker, I.L. and Schuster, P. (1999).
+#' Complete suboptimal folding of RNA and the stability of secondary structures.
+#' Biopolymers, 49:145-165.
+predict.Structure <- function (executable.path = "", fasta.file = "", name = c(), seq = c()) {
 
-#Perform secondary structure prediction for sequence
-predict.Structure <- function (execuable.path, fasta.file, name, seq) {
-
-  AllSub.path <- paste(execuable.path, "Allsub", sep = "")
-  ct2dot.path <- paste(execuable.path, "ct2dot", sep = "")
+  AllSub.path <- paste(executable.path, "Allsub", sep = "")
+  ct2dot.path <- paste(executable.path, "ct2dot", sep = "")
 
   #Validate Input
   if (!file.exists(AllSub.path) || !file.exists(ct2dot.path)){
@@ -45,40 +61,125 @@ predict.Structure <- function (execuable.path, fasta.file, name, seq) {
   }
 
   #Create empty list to store the outcome
-  dot.list <- vector("list", length = nrow(fasta))
+  dot.list <- rep("", nrow(fasta))
 
   #Put fasta file into individual files
   cat("Loading fasta files..")
   for (i in seq(nrow(fasta))){
 
     #Prepare file names for command line execution
-    fa.filename <- paste("./temp/", fasta$name[1], ".fasta", sep="")
-    ct.filename <- paste("./temp/", fasta$name[1], ".ct", sep="")
-    dot.filename <- paste("./temp/", fasta$name[1], ".dot", sep="")
+    fa.filename <- paste("./temp/", i, ".fasta", sep="")
+    ct.filename <- paste("./temp/", i, ".ct", sep="")
+    dot.filename <- paste("./temp/", i, ".dot", sep="")
 
     #Generate single line fasta file
-    cat(">", fasta$name[1], "\n", fasta$sequence[1], "\n", sep="", file=fa.filename)
+    cat(">", fasta$name[i], "\n", fasta$sequence[i], "\n", sep="", file=fa.filename)
 
     #Predict Secondary Structure
-    invisible(capture.output(system(paste(AllSub.path, "1", fa.filename, ct.filename, sep=" "))))
+    system(paste(AllSub.path, fa.filename, ct.filename, sep=" "))
 
     #Convert into the dot file, default chosen by free energy
-    system(paste(ct2dot.path, ct.filename, dot.filename, sep=" "))
+    system(paste(ct2dot.path, ct.filename, "1", dot.filename, sep=" "))
 
     #Read result from the dot file
-    dot <- read.table(file=dot.filename, header=FALSE, sep=" ")[3]
+    dot <- scan(dot.filename, what="", sep="\n")[3]
 
     #Load dot into dot list
     dot.list[i] <- dot
   }
 
+  unlink("./temp",recursive = TRUE)
+
   return(dot.list)
 
 }
 
-#Perform RND distance calculation
-calculate.distance <- function(){
 
+
+########################################################################################
+
+
+
+
+#' Return list of calculated RNA distance
+#'
+#' Perform RNA distance calculation based on imported file or
+#' input of RNA orginal sequence and alternative sequence. The RNA
+#' distance calculation is based on the RNAdistance command line
+#' algorithm by Walter Fontana, Ivo L Hofacker, Peter F Stadler.
+#' RNA distance calculation is based on -XF parameter, which
+#' indicates single alignment among each comparisons.
+#' MacOS or Unix user can ignore executable.path, when RNADistance
+#' is already installed in the system tools.
+#'
+#' @param executable.path The path referred to RNADistance executable (.../RNADistance) used by program
+#' @param name List consisted with name of the RNA sequence in seq
+#' @param seq List consisted with RNA orginal sequence
+#' @param alt List consisted with RNA alternative sequence
+#'
+#' @return Returns a list of RNA distance, ordered according to the input name sequence
+#'
+#' @examples
+#' \dontrun{dot <- calculate.distance(name = c("hsa-let-7b", "hsa-let-7a-2")
+#'                                  , ori = c("(((((.((((((((((((((((((((((((((((((.....))).)))).))).....)))))))))))))))))))))))))",
+#'                                            "(((((.((((((((((((((((((((((((((((((.....))).)))).))).....)))))))))))))))))))))))))")
+#'                                  , alt = c("(((((.(((((((((((((((((((..(((((((((.....)))))).).....))...))))))))))))))))))))))))",
+#'                                            "(((((.((((((((.(((((((((((((((((((((.....)))))).).))).....))))))))))).)))))))))))))"))}
+#'
+#' @author Sijie Xu, \email{sijie.xu@mail.utoronto.ca}
+#'
+#' @references
+#'
+#' Lorenz, Ronny and Bernhart, Stephan H. and Höner zu Siederdissen, Christian and Tafer, Hakim and Flamm, Christoph and Stadler, Peter F. and Hofacker, Ivo L.
+#' ViennaRNA Package 2.0 Algorithms for Molecular Biology, 6:1 26, 2011, doi:10.1186/1748-7188-6-26
+predict.distance <- function(executable.path = "", name = c(), ori = c(), alt = c()){
+
+  #Validate Input
+  if (missing(name) || missing(ori) || missing(alt)){
+    stop("Input file unavailable")
+  } else if (Sys.which("RNADistance") == "" &&  executable.path == ""){
+    stop("Unable to find RNADistance installation")
+  } else if (executable.path == ""){
+    executable.path = "RNADistance"
+  }
+
+  if (length(name) != length(ori) || length(name) != length(alt)){
+    stop("Name and Sequence does not share the same length")
+  }
+
+  #Create new folder to store temperary files
+  dir.create("temp")
+
+  #Constructe Object to store input
+  fasta <- data.frame(name = name, orginal = ori, alternative = alt)
+
+  #Create empty list to store the outcome
+  dis.list <- rep(0, nrow(fasta))
+
+  #Put fasta file into individual files
+  cat("Loading files..")
+  for (i in seq(nrow(fasta))){
+
+    #Prepare file names for command line execution
+    fa.filename <- paste("./temp/", i, ".fasta", sep="")
+    dis.filename <- paste("./temp/", i, ".txt", sep="")
+
+    #Generate single line fasta file
+    cat(">", fasta$name[i], "\n", fasta$orginal[i], "\n", fasta$alternative[i], "\n", sep="", file=fa.filename)
+
+    #Predict Secondary Structure
+    system(paste(executable.path, "-Xf < ", fa.filename, ">", dis.filename))
+
+    #Read result from the dot file
+    dis <- scan(dis.filename, what="", sep="\n")[2]
+
+    #Load dot into dot list
+    dis.list[i] <- substr(dis, 4, nchar(dis) - 2)
+  }
+
+  unlink("./temp",recursive = TRUE)
+
+  return(strtoi(dis.list))
 }
 
 
