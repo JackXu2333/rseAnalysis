@@ -9,7 +9,8 @@ Analysis.DISEXP(
   dis.distance,
   exp.tumor,
   exp.sample,
-  method = "linear"
+  method = "linear",
+  seperate = TRUE
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ Analysis.DISEXP(
 \item{exp.sample}{Set of reads from gene expression from normal samples (usually blood sample)}
 
 \item{method}{Selection of linear or gaussian log link function for regression}
+
+\item{seperate}{TRUE and FALSE varible if TRUE the output image will be shown separately}
 }
 \value{
 Show of four graph for validation, includes

@@ -4,16 +4,16 @@
 \alias{predict.distance}
 \title{Return list of calculated RNA distance}
 \usage{
-\method{predict}{distance}(executable.path = "", name = c(), seq.ori = c(), seq.alt = c())
+\method{predict}{distance}(executable.path = "", name = c(), struct.ori = c(), struct.alt = c())
 }
 \arguments{
 \item{executable.path}{The path referred to RNADistance executable (.../RNADistance) used by program}
 
 \item{name}{List consisted with name of the RNA sequence in seq}
 
-\item{seq.ori}{List consisted with RNA orginal sequence}
+\item{struct.ori}{List consisted with RNA orginal sequence}
 
-\item{seq.alt}{List consisted with RNA alternative sequence}
+\item{struct.alt}{List consisted with RNA alternative sequence}
 }
 \value{
 Returns a list of RNA distance, ordered according to the input name sequence
@@ -30,9 +30,9 @@ is already installed in the system tools.
 }
 \examples{
 \dontrun{dot <- calculate.distance(name = c("hsa-let-7b", "hsa-let-7a-2")
-, seq.ori = c("(((((.((((((((((((((((((((((((((((((.....))).)))).))).....)))))))))))))))))))))))))",
+, struct.ori = c("(((((.((((((((((((((((((((((((((((((.....))).)))).))).....)))))))))))))))))))))))))",
           "(((((.((((((((((((((((((((((((((((((.....))).)))).))).....)))))))))))))))))))))))))")
-, seq.alt = c("(((((.(((((((((((((((((((..(((((((((.....)))))).).....))...))))))))))))))))))))))))",
+, struct.alt = c("(((((.(((((((((((((((((((..(((((((((.....)))))).).....))...))))))))))))))))))))))))",
            "(((((.((((((((.(((((((((((((((((((((.....)))))).).))).....))))))))))).)))))))))))))"))}
 
 }

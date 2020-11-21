@@ -11,6 +11,7 @@
 #' @param exp.tumor Set of reads from gene expression from tumor samples
 #' @param exp.sample Set of reads from gene expression from normal samples (usually blood sample)
 #' @param method Selection of linear or gaussian log link function for regression
+#' @param seperate TRUE and FALSE varible if TRUE the output image will be shown separately
 #'
 #' @return Show of four graph for validation, includes
 #' \itemize{
@@ -36,7 +37,7 @@
 #' @import ggplot2
 #' @importFrom gridExtra grid.arrange
 #' @importFrom stats gaussian glm
-Analysis.DISEXP <- function(dis.name, dis.distance, exp.tumor, exp.sample, method = "linear"){
+Analysis.DISEXP <- function(dis.name, dis.distance, exp.tumor, exp.sample, method = "linear", seperate = TRUE){
 
   #Validate input
   if (typeof(dis.name) != "character" || typeof(dis.distance) != "integer"
@@ -91,8 +92,15 @@ Analysis.DISEXP <- function(dis.name, dis.distance, exp.tumor, exp.sample, metho
   density.genexp <- ggplot2::ggplot(disexp.df, ggplot2::aes_string(x="read_diff", color="name")) +
     ggplot2::geom_density()
 
-  #Generate the plots
-  plot(gridExtra::grid.arrange(scatter, density.dis, box.genexp, box.dis, ncol=2, nrow=2))
+  #Generate the plots according to selection of separation
+  if(!seperate) {
+    plot(gridExtra::grid.arrange(scatter, density.dis, box.genexp, box.dis, ncol=2, nrow=2))
+  } else {
+    plot(scatter)
+    plot(density.dis)
+    plot(box.genexp)
+    plot(box.dis)
+  }
 
   if (method == "linear"){
     #Perform linear modeling on the object

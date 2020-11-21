@@ -4,7 +4,7 @@ library(rseAnalysis)
 test_that("File input for secondary structure is correct", {
 
   #executable path error
-  expect_error(mutate <- predict.Structure(executable.path = "./foo", fasta.file = "../source/test.fasta"))
+  expect_error(mutate <- predict.Structure(executable.path = "./foo", fasta.file = "../../inst/extdata/test.fasta"))
 
   #fasta file path error
   expect_error(mutate <- predict.Structure(executable.path = "../source", fasta.file = "./foo/datsa"))
@@ -32,10 +32,10 @@ test_that("Secondary structure is working", {
   system(paste0("export DATAPATH=", gsub(" ", "\\ ", getwd(), fixed = TRUE), "/tests/source/data_tables"))
 
   #Load via file
-  mutate.file <- predict.Structure(executable.path = "../source/exe", fasta.file = "../source/test.fasta")
+  mutate.file <- predict.Structure(executable.path = "../../inst/extdata/exe", fasta.file = "../../inst/extdata/test.fasta")
 
   #Load via file
-  mutate.input <- predict.Structure(executable.path = "../source/exe",
+  mutate.input <- predict.Structure(executable.path = "../../inst/extdata/exe",
                                     rna.name = c("hsa-let-7a-1", "hsa-let-7a-2", "hsa-let-7a-3", "hsa-let-7b"),
                                     rna.seq = c("UGGGAUGAGGUAGUAGGUUGUAUAGUUUUAGGGUCACACCCACCACUGGGAGAUAACUAUACAAUCUACUGUCUUUCCUA",
                                             "AGGUUGAGGUAGUAGGUUGUAUAGUUUAGAAUUACAUCAAGGGAGAUAACUGUACAGCCUCCUAGCUUUCCU",
@@ -63,11 +63,11 @@ test_that("File input for distance is correct", {
 
   #Input file size misalignment
   expect_error(mutate <- predict.distance(executable.path = "", name = c("heyhey", "blueblue")
-                                          , seq.ori = c("JJJ"), seq.alt = c("AAA")))
+                                          , struct.ori = c("JJJ"), struct.alt = c("AAA")))
 
   #Input file type missed
   expect_error(mutate <- predict.distance(executable.path = "", name = c("heyhey", "blueblue")
-                                          , seq.ori = c(1, 2), seq.alt = c("AAA", "BBB")))
+                                          , struct.ori = c(1, 2), struct.alt = c("AAA", "BBB")))
 
 
 })
@@ -79,9 +79,9 @@ test_that("RNA distance prediction is working", {
   #Load file
   distance <- predict.distance(executable.path = "",
                                       name = c("hsa-let-7a-1", "hsa-let-7a-2"),
-                               seq.ori = c("(((((.(((((((((((((((((((((.....(((...((((....)))).)))))))))))))))))))))))))))))",
+                               struct.ori = c("(((((.(((((((((((((((((((((.....(((...((((....)))).)))))))))))))))))))))))))))))",
                                                "(((..(((.(((.(((((((((((((.........(((......)))))))))))))))).))).))).)))"),
-                               seq.alt = c("(((((.(((((((((((((((((((((.....(((...((((....)))).)))))))))))))))))))))))))))))",
+                               struct.alt = c("(((((.(((((((((((((((((((((.....(((...((((....)))).)))))))))))))))))))))))))))))",
                                               "(((..(((.(((.(((((((((((.(((..................)))))))))))))).))).))).)))"))
 
   #make sure work as expected

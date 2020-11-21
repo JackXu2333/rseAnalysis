@@ -118,16 +118,16 @@ predict.Structure <- function (executable.path = "", fasta.file = "", rna.name =
 #'
 #' @param executable.path The path referred to RNADistance executable (.../RNADistance) used by program
 #' @param name List consisted with name of the RNA sequence in seq
-#' @param seq.ori List consisted with RNA orginal sequence
-#' @param seq.alt List consisted with RNA alternative sequence
+#' @param struct.ori List consisted with RNA orginal sequence
+#' @param struct.alt List consisted with RNA alternative sequence
 #'
 #' @return Returns a list of RNA distance, ordered according to the input name sequence
 #'
 #' @examples
 #' \dontrun{dot <- calculate.distance(name = c("hsa-let-7b", "hsa-let-7a-2")
-#' , seq.ori = c("(((((.((((((((((((((((((((((((((((((.....))).)))).))).....)))))))))))))))))))))))))",
+#' , struct.ori = c("(((((.((((((((((((((((((((((((((((((.....))).)))).))).....)))))))))))))))))))))))))",
 #'           "(((((.((((((((((((((((((((((((((((((.....))).)))).))).....)))))))))))))))))))))))))")
-#' , seq.alt = c("(((((.(((((((((((((((((((..(((((((((.....)))))).).....))...))))))))))))))))))))))))",
+#' , struct.alt = c("(((((.(((((((((((((((((((..(((((((((.....)))))).).....))...))))))))))))))))))))))))",
 #'            "(((((.((((((((.(((((((((((((((((((((.....)))))).).))).....))))))))))).)))))))))))))"))}
 #'
 #' @author Sijie Xu, \email{sijie.xu@mail.utoronto.ca}
@@ -136,10 +136,10 @@ predict.Structure <- function (executable.path = "", fasta.file = "", rna.name =
 #'
 #' Lorenz, Ronny and Bernhart, Stephan H. and Höner zu Siederdissen, Christian and Tafer, Hakim and Flamm, Christoph and Stadler, Peter F. and Hofacker, Ivo L.
 #' ViennaRNA Package 2.0 Algorithms for Molecular Biology, 6:1 26, 2011, doi:10.1186/1748-7188-6-26
-predict.distance <- function(executable.path = "", name = c(), seq.ori = c(), seq.alt = c()){
+predict.distance <- function(executable.path = "", name = c(), struct.ori = c(), struct.alt = c()){
 
   #Validate Input
-  if (missing(name) || missing(seq.ori) || missing(seq.alt)){
+  if (missing(name) || missing(struct.ori) || missing(struct.alt)){
     stop("Input file unavailable")
   } else if (Sys.which("RNADistance") == "" &&  executable.path == ""){
     stop("Unable to find RNADistance installation")
@@ -147,9 +147,9 @@ predict.distance <- function(executable.path = "", name = c(), seq.ori = c(), se
     executable.path = "RNADistance"
   }
 
-  if (length(name) != length(seq.ori) || length(name) != length(seq.alt)){
+  if (length(name) != length(struct.ori) || length(name) != length(struct.alt)){
     stop("Name and Sequence does not share the same length")
-  } else if (typeof(name) != "character" ||  typeof(seq.ori) != "character" ||  typeof(seq.alt) != "character"){
+  } else if (typeof(name) != "character" ||  typeof(struct.ori) != "character" ||  typeof(struct.alt) != "character"){
     stop("Invalidate input type")
   }
 
@@ -157,7 +157,7 @@ predict.distance <- function(executable.path = "", name = c(), seq.ori = c(), se
   dir.create("temp")
 
   #Constructe Object to store input
-  fasta <- data.frame(name = name, orginal = seq.ori, alternative = seq.alt)
+  fasta <- data.frame(name = name, orginal = struct.ori, alternative = struct.alt)
 
   #Create empty list to store the outcome
   dis.list <- rep(0, nrow(fasta))

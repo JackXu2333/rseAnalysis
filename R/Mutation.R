@@ -151,7 +151,7 @@ RNA.validate <- function(fasta, vcf, bed){
                             , DIR=character(), SEQ=character()
                             , CUR.REF=character(), MUT.REF=character()
                             , MUT.ALT=character(), MUT.SEQ=character()
-                            , MUT.POS=character())
+                            , MUT.POS=character(), MUT.ID=character())
 
   for (i in seq(nrow(RNA))){#Iterate through mRNA
 
@@ -178,7 +178,7 @@ RNA.validate <- function(fasta, vcf, bed){
                                   , DIR=RNA$DIR[i], SEQ=current.seq
                                   , CUR.REF=current.ref, MUT.REF=DNA2RNA(mutation$REF[p])
                                   , MUT.ALT=DNA2RNA(mutation$ALT[p]), MUT.SEQ=""
-                                  , MUT.POS=mutation$POS[p])
+                                  , MUT.POS=mutation$POS[p], MUT.ID=mutation$ID[p])
 
         #Compare against the RNA mutation reference
         if(current.ref == newMatch$MUT.REF){ #If Match is found

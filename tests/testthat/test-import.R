@@ -12,7 +12,7 @@ test_that("vcf2df file loading", {
   #corrupted file type
   expect_error(vcf <- vcf2df("./tests/source/test.vff"))
 
-  vcf <- vcf2df("../source/test.vcf")
+  vcf <- vcf2df("../../inst/extdata/test.vcf")
 
   #check for result type
   expect_match(typeof(vcf$CHROM), "character")
@@ -38,7 +38,7 @@ test_that("fasta2df file loading", {
   #corrupted file type
   expect_error(fasta <- fasta2df("./tests/source/test.fastaaa"))
 
-  fasta <- fasta2df("../source/test.fasta")
+  fasta <- fasta2df("../../inst/extdata/test.fasta")
 
   #check for result type
   expect_match(typeof(fasta$NAME), "character")
@@ -58,7 +58,7 @@ test_that("bed2df file loading", {
   #corrupted file type
   expect_error(bed <- bed2df("./tests/source/test.beeed"))
 
-  bed <- bed2df("../source/test.bed")
+  bed <- bed2df("../../inst/extdata/test.bed")
 
   #check for result type
   expect_match(typeof(bed$CHROM), "character")

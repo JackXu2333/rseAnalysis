@@ -1,0 +1,162 @@
+---
+title: "Introduction to rseAnalysis package"
+author: "Sijie Xu"
+date: "`r format(Sys.time(), '%d %b %Y')`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to rseAnalysis package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Introduction
+
+`rseAnalysis` (RNA structure and Expression analysis) package includes series of utility function including stander file reader, structural prediction, RNA distance calculation, and analysis package. `rseAnalysis` provides an all-in-one solution for gene expression and secondary structure mutation correlation analysis by automating the data processing and analysis of gene expression and mutation data from the well-acknowledged database such as mirBase and TCGA. 
+
+To download **MPLNClust**, use the following commands:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("JackXu2333/rseAnalysis")
+```
+
+## Data Input
+
+The function *vcf2df*, *fasta2df*, and *bed2df* provides measures to read file with vcf, fasta, and bed extensions. The output file structures is as followed: 
+
+`fasta object`
+\itemize{
+   \item NAME - Corresponding of the RNA sequence
+   \item SEQ - The original RNA sequence
+}
+
+`bed object`
+\itemize{
+   \item CHROM - Located in chromosome CHROM
+   \item STAPOS - The start location of the sequence
+   \item ENDPOS - The end location of the sequence
+   \item DIR - The direction of the sequence
+   \item TYPE - The type of the sequence
+   \item ID - ID of the RNA (if avilable)
+   \item ALIAS - The alias of the sequence
+   \item NAME - The name of the sequence
+}
+
+`vcf object`
+ \itemize{
+   \item CHROM - Located in chromosome CHROM
+   \item POS - The start position of the mutation
+   \item ID - ID of the mutation (if available)
+   \item REF - The reference base(s) on the mutation point
+   \item ALT - The alternative base(s) appeared in during mutation
+   \item CONSEQUENCE - Record the effect of mutation under biological studies
+   \item OCCURRENCE - Record the associated cancer and its distribution
+   \item affected_donors - Record the total number of donor affected
+   \item project_count - Number of project associated with current studies
+}
+
+```{r input,  warning=FALSE} 
+
+#Load sample data file
+vcf <- vcf2df("../inst/extdata/hsa_GRCh37.vcf")
+fasta <- fasta2df("../inst/extdata/hsa_GRCh37.fasta")
+bed <- bed2df("../inst/extdata/hsa_GRCh37.bed")
+
+#Inspect the imported file
+head(vcf)
+head(fasta)
+head(bed)
+
+```
+
+
+## Calculate RNA distance for mutated sequence
+
+Find mutated RNA sequence based on the fasta, bed and vcf files
+
+``` {r mutate,  warning=FALSE}
+
+#Mutate RNA using mutation from vcf files
+RNA.mutated <- RNA.validate(fasta = fasta, 
+             vcf = vcf, 
+             bed = bed)
+
+```
+
+Noted that message stated that the mutation has matching rate 0.714, this represents that only 71.4% of the mutation reference matches the gene sequence on sequence provided (fasta), and the remaining 28.6% of the sequence failed to match due to misalignment, differences in genome assemble in bed and fasta file, or potentially different representation of wildtype among vcf file and fasta file. For tutorial purposes, we will skip the mismatches and predict the secondary structure for the remaining. 
+
+
+``` {r structure, message=FALSE, warning=FALSE}
+
+#Filter out the one that is misaligned, choose the first 200, or it takes forever to run
+RNA.mutated <- subset(RNA.mutated, MATCH)[1:200,]
+
+#Perform structure prediction on orginal sequence
+struct.ori <- suppressMessages(predict.Structure(executable.path = "../inst/extdata/exe"
+                                   , rna.name = RNA.mutated$NAME, rna.seq = RNA.mutated$SEQ))
+
+#Perform structure prediction on mutated sequence
+struct.alt <- suppressMessages(predict.Structure(executable.path = "../inst/extdata/exe"
+                                   , rna.name = RNA.mutated$NAME, rna.seq = RNA.mutated$MUT.SEQ))
+
+```
+
+Calculation RNADistance based on the result from structural prediction is straightforward, the result help determines how much of a structural difference there are among the original and mutated RNA sequence. Executable.path is omitted for mac or Unix user who has RNAStructure installed see more at `?predict.distance`
+
+``` {r distance, message=FALSE, warning=FALSE}
+
+#Run prediction
+RNA.distance <- predict.distance(executable.path = "", name = RNA.mutated$NAME, 
+                  struct.ori = struct.ori, struct.alt = struct.alt)
+
+```
+
+## RNA distance and gene expression analysis 
+
+``` {r analysis}
+
+#Load expression data
+expression <- read.csv("../inst/extdata/test.csv", header = TRUE)
+
+#Use only standardize read
+expression <- subset(expression, Read.Type == "reads_per_million_miRNA_mapped")[1:200, ]
+
+Analysis.DISEXP(dis.name = RNA.mutated$NAME, dis.distance = RNA.distance, 
+                exp.tumor <- expression$Sample, exp.sample <- expression$Normal, method = "linear", seperate = TRUE)
+
+```
+
+Analysis.DISEXP uses the absolute difference in expression in modelling change in expression between the tumour and normal samples from BRCA patients. Here we use "reads_per_million_miRNA_mapped" as the input because it is standardized and can use to compare between cases. !Beware that for the analysis to work, one has to make sure the gene expression data and distance data are collected from the same type of mutation, or from the same sample (usually a sample will be insufficient in retrieving both expression and sequencing information), or it affects the outcome of the analysis dramatically. 
+
+Gere the Analysis.DISEXP generate both text and graphical output, with text output indicating the beta and p_value of the resulting regression model. From this example, the correlation between RNA distance is -0.11 with p-value of 0.12. The graphical output shows the prediction model and confidence interval on the scatter plot, RNA distance distribution by RNA type and boxplots showing the potential outliers from gene expression and RNA distance data set.
+
+## Package References
+
+[Sijie Xu (NA). rseAnalysis: Correlation analysis of RNA secondary structure mutation and differential expression. R package version 0.1.0.](https://github.com/JackXu2333/dseAnalysis)
+
+<br>
+
+## Other References
+
+Kozomara, A., & Griffiths-Jones, S. (2011). miRBase: integrating microRNA annotation and deep-sequencing data. Nucleic acids research, 39(Database issue), D152–D157. https://doi.org/10.1093/nar/gkq1027
+
+Wickham, H. and Bryan, J. (2019). *R Packages* (2nd edition). Newton, Massachusetts: O'Reilly Media. https://r-pkgs.org/
+
+TCGA Research Network: https://www.cancer.gov/tcga.
+
+Zhiwen. T, Sijie Xu (2020) miRNA Motif Analysis https://github.com/Deemolotus/BCB330Y-and-BCB430Y/tree/master/Main
+
+#[END]
+
+----
+
+```{r}
+sessionInfo()
+```

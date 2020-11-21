@@ -103,7 +103,7 @@ fasta2df <- function(filepath) {
   fasta_source <- Biostrings::readRNAStringSet(filepath)
 
   #Format FASTA file
-  fasta <- data.frame(NAME = names(fasta_source), SEQ = paste(fasta_source))
+  fasta <- data.frame(NAME = sub("\\ .*", "", names(fasta_source)), SEQ = paste(fasta_source))
 
   return(fasta)
 

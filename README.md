@@ -35,18 +35,18 @@ To list all functions available in the package:
 ls("package:rseAnalysis")
 ```
 
-`rseAnalysis` consisted with 8 public functions. Functions
-***vcf2df***., ***fasta2df***., ***bed2df***. loads gene mutation, gene
-sequence and location data from vcf, fasta and bed file respectively;
-Functions ***predict.Structure***. utilize command line software
-*RNAstructure* to predict RNA secondary structure in dot bracket form;
-Functions ***predict.distance***. utilize command line software
-*RNAdistance* to calculate gene distance based on structure; Working
-with gene mutation data, function ***RNA.validate***. applies mutation
-to RNA sequence after validation on the genome assembly between files,
-***DNA2RNA***. maps DNA sequence to RNA after validation. Function
+`rseAnalysis` consisted of 8 public functions. Functions ***vcf2df***.,
+***fasta2df***., ***bed2df***. loads gene mutation, gene sequence and
+location data from vcf, fasta and bed file respectively; Functions
+***predict.Structure***. utilize command-line software *RNAstructure* to
+predict RNA secondary structure in dot-bracket form; Functions
+***predict.distance***. utilize command-line software *RNAdistance* to
+calculate gene distance based on structure; Working with gene mutation
+data, function ***RNA.validate***. applies mutation to RNA sequence
+after validation on the genome assembly between files, ***DNA2RNA***.
+maps DNA sequence to RNA after validation. Function
 ***Analysis.DISEXP***. use regression to analyze genetic distance and
-gene expression data, offering use of linear or logistic model.
+gene expression data, offering the use of linear or logistic models.
 
 An overview of the package is illustrated below:
 
@@ -68,19 +68,19 @@ browseVignettes("rseAnalysis")
 
 rseAnalysis is initialized, developed and maintained by Sijie Xu
 <sijie.xu@mail.utoronto.ca>. Functions ***vcf2df***., ***fasta2df***.,
-***bed2df***. uses import machism from package *vcfR* and *Biostrings*
+***bed2df***. uses import mechanism from package *vcfR* and *Biostrings*
 and tailor to the desired object form. Functions
-***predict.Structure***. and ***predict.distance***. uses *RNAstructure*
-and *RNAdistance* from users operating machine to generate results.
-***DNA2RNA***. use the s2c from *seqinr* R package, function
-***Analysis.DISEXP***. make use of glm and lm modeling provided by R
+***predict.Structure***. and ***predict.distance***. uses *RNA
+structure* and *RNAdistance* from users operating machine to generate
+results. ***DNA2RNA***. use the s2c from *seqinr* R package, function
+***Analysis.DISEXP***. make use of glm and lm modelling provided by R
 *stats* package, as well as ggplot from *ggplot2* package to visualize
-result. Last but not less, key algorithm from function
-***RNA.validate***. is inspired by project partnered with Zhiwen Tan,
+the result. Last but not less, the key algorithm from function
+***RNA.validate***. is inspired by a project partnered with Zhiwen Tan,
 mainly contributed by Sijie Xu in 2020, referenced below.
 
-File including human miRNA sequence, BRCA gene expression data used in
-both example and test is sourced from miRBase and TCGA.
+A file including human miRNA sequence, BRCA gene expression data used in
+both example and the test is sourced from miRBase and TCGA.
 
 ## References
 
@@ -128,6 +128,5 @@ Zhiwen. T, Sijie Xu (2020) miRNA Motif Analysis
 
 ## Acknowledgements
 
-Package rseAnalysis was initialized for purpose of BCB410F (2020 Fall):
-Applied Bioinformatics, University of Toronto St.George campus directed
-by professor Anjali Silva <anjali.silva@uhnresearch.ca>
+This package was developed as part of an assessment for 2020BCB410H:
+Applied Bioinformatics, University of Toronto, Toronto,CANADA.
