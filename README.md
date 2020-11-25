@@ -66,6 +66,9 @@ For tutorials and plot interpretation, refer to the vignette:
 browseVignettes("rseAnalysis")
 ```
 
+Or via link here:
+<https://github.com/JackXu2333/rseAnalysis/blob/new_branch/vignettes/Introduction_rseAnalysis.md>
+
 ## Contribution
 
 rseAnalysis is initialized, developed and maintained by Sijie Xu
