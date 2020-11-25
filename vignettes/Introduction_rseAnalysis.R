@@ -6,10 +6,13 @@ knitr::opts_chunk$set(
 
 ## ----input,  warning=FALSE----------------------------------------------------
 
+#Source library
+library(rseAnalysis)
+
 #Load sample data file
-vcf <- vcf2df("../inst/extdata/hsa_GRCh37.vcf")
-fasta <- fasta2df("../inst/extdata/hsa_GRCh37.fasta")
-bed <- bed2df("../inst/extdata/hsa_GRCh37.bed")
+vcf <- rseAnalysis::vcf2df(system.file("extdata", "hsa_GRCh37.vcf", package = "rseAnalysis"))
+fasta <- rseAnalysis::fasta2df(system.file("extdata", "hsa_GRCh37.fasta", package = "rseAnalysis"))
+bed <- rseAnalysis::bed2df(system.file("extdata", "hsa_GRCh37.bed", package = "rseAnalysis"))
 
 #Inspect the imported file
 head(vcf)
@@ -49,7 +52,8 @@ RNA.distance <- predict.distance(executable.path = "", name = RNA.mutated$NAME,
 ## ----analysis-----------------------------------------------------------------
 
 #Load expression data
-expression <- read.csv("../inst/extdata/test.csv", header = TRUE)
+
+expression <- read.csv(system.file("extdata", "test.csv", package = "rseAnalysis"), header = TRUE)
 
 #Use only standardize read
 expression <- subset(expression, Read.Type == "reads_per_million_miRNA_mapped")[1:200, ]

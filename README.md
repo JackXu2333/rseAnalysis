@@ -24,7 +24,9 @@ You can install the development version from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("JackXu2333/rseAnalysis")
+require("devtools")
+devtools::install_github("JackXu2333/rseAnalysis", build_vignettes = TRUE)
+library("rseAnalysis")
 ```
 
 ## Overview

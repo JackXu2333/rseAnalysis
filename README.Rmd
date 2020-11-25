@@ -28,7 +28,9 @@ You can install the development version from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("JackXu2333/rseAnalysis")
+require("devtools")
+devtools::install_github("JackXu2333/rseAnalysis", build_vignettes = TRUE)
+library("rseAnalysis")
 ```
 
 ## Overview
@@ -96,5 +98,3 @@ Zhiwen. T, Sijie Xu (2020) miRNA Motif Analysis https://github.com/Deemolotus/BC
 ## Acknowledgements
 
 This package was developed as part of an assessment for 2020BCB410H: Applied Bioinformatics, University of Toronto, Toronto,CANADA.
-
-

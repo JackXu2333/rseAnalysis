@@ -25,7 +25,8 @@ RoxygenNote: 7.1.1
 Suggests: 
     testthat,
     knitr,
-    rmarkdown
+    rmarkdown,
+    R.rsp
 Depends: 
     R (>= 2.10)
-VignetteBuilder: knitr
+VignetteBuilder: R.rsp
