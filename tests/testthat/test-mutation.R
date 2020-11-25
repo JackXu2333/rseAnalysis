@@ -25,9 +25,12 @@ test_that("Mutation and validation is working", {
   expect_error(mutate <- RNA.validate())
 
   #Load requirment file
-  vcf <- vcf2df("../../inst/extdata/test.vcf")
-  fasta <- fasta2df("../../inst/extdata/test.fasta")
-  bed <- bed2df("../../inst/extdata/test.bed")
+  filePath <- system.file("extdata", "test.vcf", package = "rseAnalysis")
+  vcf <- vcf2df(filePath)
+  filePath <- system.file("extdata", "test.fasta", package = "rseAnalysis")
+  fasta <- fasta2df(filePath)
+  filePath <- system.file("extdata", "test.bed", package = "rseAnalysis")
+  bed <- bed2df(filePath)
 
   #Input format error
   expect_error(mutate <- RNA.validate(fasta = data.frame(NAME = c("hsa", "hsa"), SEQQ = c("GGG", "GGG")), bed = bed, vcf = vcf))

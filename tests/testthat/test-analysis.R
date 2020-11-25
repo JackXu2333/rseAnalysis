@@ -29,7 +29,8 @@ test_that("Analysis input validation", {
 test_that("Analysis working", {
 
   #Load sample files
-  expression <- read.csv("../../inst/extdata/test.csv", header = TRUE)
+  filePath <- system.file("extdata", "test.csv", package = "rseAnalysis")
+  expression <- read.csv(filePath, header = TRUE)
   expression <- subset(expression, Read.Type == "reads_per_million_miRNA_mapped")[1:10, ]
 
   dis.name <- expression$mRNA
