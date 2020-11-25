@@ -1,7 +1,9 @@
 ## ---- include = FALSE---------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.path = "figures",
+  out.width = "100%"
 )
 
 ## ----input,  warning=FALSE----------------------------------------------------

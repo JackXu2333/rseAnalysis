@@ -2,7 +2,7 @@
 title: "Introduction to rseAnalysis package"
 author: "Sijie Xu"
 date: "`r format(Sys.time(), '%d %b %Y')`"
-output: rmarkdown::html_vignette
+output: github_document
 vignette: >
   %\VignetteIndexEntry{Introduction to rseAnalysis package}
   %\VignetteEngine{knitr::rmarkdown}
@@ -12,7 +12,9 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.path = "figures",
+  out.width = "100%"
 )
 ```
 
