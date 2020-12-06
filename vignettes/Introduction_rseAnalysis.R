@@ -30,25 +30,31 @@ RNA.mutated <- RNA.validate(fasta = fasta,
              bed = bed)
 
 
-## ----structure, message=FALSE, warning=FALSE----------------------------------
+## ----structure----------------------------------------------------------------
 
-#Filter out the one that is misaligned, choose the first 200, or it takes forever to run
+# ================== Sample code for RNA secondary structure prediction ==========================
+#
+#  struct.ori <- suppressMessages(predictStructure(executable.path = "../inst/extdata/exe"
+#                                   , rna.name = RNA.mutated$NAME, rna.seq = RNA.mutated$SEQ))
+#  struct.alt <- suppressMessages(predictStructure(executable.path = "../inst/extdata/exe"
+#                                   , rna.name = RNA.mutated$NAME, rna.seq = RNA.mutated$MUT.SEQ))
+
+# Read prerun result from the predictStructure
 RNA.mutated <- subset(RNA.mutated, MATCH)[1:200,]
+struct.ori <- read.csv(system.file("extdata", "vignetteSampleORI.csv", package = "rseAnalysis"))
+struct.alt <- read.csv(system.file("extdata", "vignetteSampleALT.csv", package = "rseAnalysis"))
 
-#Perform structure prediction on orginal sequence
-struct.ori <- suppressMessages(predict.Structure(executable.path = "../inst/extdata/exe"
-                                   , rna.name = RNA.mutated$NAME, rna.seq = RNA.mutated$SEQ))
-
-#Perform structure prediction on mutated sequence
-struct.alt <- suppressMessages(predict.Structure(executable.path = "../inst/extdata/exe"
-                                   , rna.name = RNA.mutated$NAME, rna.seq = RNA.mutated$MUT.SEQ))
+head(struct.ori)
+head(struct.alt)
 
 
 ## ----distance, message=FALSE, warning=FALSE-----------------------------------
 
 #Run prediction
-RNA.distance <- predict.distance(executable.path = "", name = RNA.mutated$NAME, 
-                  struct.ori = struct.ori, struct.alt = struct.alt)
+RNA.distance <- predictDistance(name = RNA.mutated$NAME
+                                 , struct.ori = struct.ori$struct.ori
+                                 , struct.alt = struct.alt$struct.alt
+                                 , method = "gsc")
 
 
 ## ----analysis-----------------------------------------------------------------

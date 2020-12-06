@@ -9,10 +9,12 @@
 #' @return Return the complementary sequence of DNA.Seq's transcript RNA
 #'
 #' @examples
-#' \dontrun{RNA <- DNA2RNA("TGGGATGAGGTGGATGTTTCCTA")}
+#' (RNA <- DNA2RNA("TGGGATGAGGTGGATGTTTCCTA"))
 #'
 #' @author Sijie Xu, \email{sijie.xu@mail.utoronto.ca}
 #'
+#' @export
+
 DNA2RNA <- function(DNA.Seq){
 
   DNAbase <- c("T", "A", "C", "G")
@@ -82,15 +84,17 @@ DNA2RNA <- function(DNA.Seq){
 #' }
 #'
 #' @examples
-#' \dontrun{mutated <- RNA.validate(
-#'               fasta = fasta2df("./test.fasta"),
-#'               vcf = vcf2df("./test.vcf",
-#'               bed = bed2df("./test.bed"))}
+#' mutated <- RNA.validate(
+#'               fasta = fasta2df(system.file("extdata", "test.fasta", package = "rseAnalysis")),
+#'               vcf = vcf2df(system.file("extdata", "test.vcf", package = "rseAnalysis")),
+#'               bed = bed2df(system.file("extdata", "test.bed", package = "rseAnalysis")))
 #'
 #' @author Sijie Xu, \email{sijie.xu@mail.utoronto.ca}
 #'
 #' @references Xu, S. Tan, Z., BCB430 "Analysis.zip/File Validation.rmd" <https://github.com/Deemolotus/BCB330Y-and-BCB430Y>
 #'
+#' @export
+
 RNA.validate <- function(fasta, vcf, bed){
 
   #validate input type
@@ -209,7 +213,7 @@ RNA.validate <- function(fasta, vcf, bed){
   #Print the success rate of the matching
   cat(sprintf("The matching rate of the dataset is %s \n", match.count/(match.count + error.count)))
 
-  return(RNA.matched)
+  return(unique(RNA.matched))
 
 }
 

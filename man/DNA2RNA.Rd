@@ -18,7 +18,7 @@ sequence of transcript RNA of input DNA sequence.
 This function will validate the DNA sequence.
 }
 \examples{
-\dontrun{RNA <- DNA2RNA("TGGGATGAGGTGGATGTTTCCTA")}
+(RNA <- DNA2RNA("TGGGATGAGGTGGATGTTTCCTA"))
 
 }
 \author{

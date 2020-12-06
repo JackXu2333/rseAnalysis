@@ -21,7 +21,8 @@ Perform fasta file retrieving using readRNAStringSet function from Biostrings, r
 in standarlize data.frame for easy usage.
 }
 \examples{
-\dontrun{fasta2df("./test.fasta")}
+filePath <- system.file("extdata", "test.fasta", package = "rseAnalysis")
+fasta <- fasta2df(filePath)
 
 }
 \references{

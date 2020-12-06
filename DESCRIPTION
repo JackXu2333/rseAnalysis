@@ -20,13 +20,14 @@ Imports:
     Biostrings,
     tidyr,
     reshape,
-    gridExtra
+    gridExtra,
+    R.rsp,
+    gscVisualizer
 RoxygenNote: 7.1.1
 Suggests: 
     testthat,
     knitr,
-    rmarkdown,
-    R.rsp
+    rmarkdown
 Depends: 
     R (>= 2.10)
-VignetteBuilder: R.rsp
+VignetteBuilder: knitr

@@ -34,9 +34,11 @@
 #'
 #' @author Sijie Xu, \email{sijie.xu@mail.utoronto.ca}
 #'
-#' @import ggplot2
+#' @export
+#' @importFrom ggplot2 ggplot geom_point aes_string geom_boxplot geom_density geom_point geom_smooth
 #' @importFrom gridExtra grid.arrange
 #' @importFrom stats gaussian glm
+
 Analysis.DISEXP <- function(dis.name, dis.distance, exp.tumor, exp.sample, method = "linear", seperate = TRUE){
 
   #Validate input

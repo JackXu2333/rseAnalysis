@@ -20,7 +20,8 @@
 #'
 #'
 #' @examples
-#' \dontrun{vcf2df("./test.vcf")}
+#' filePath <- system.file("extdata", "test.vcf", package = "rseAnalysis")
+#' vcf <- vcf2df(filePath)
 #'
 #' @author Sijie Xu, \email{sijie.xu@mail.utoronto.ca}
 #'
@@ -31,6 +32,7 @@
 #' @export
 #' @importFrom tools file_ext
 #' @importFrom vcfR read.vcfR
+
 vcf2df <- function(filepath) {
 
   #Validate file path
@@ -77,7 +79,8 @@ vcf2df <- function(filepath) {
 #'
 #'
 #' @examples
-#' \dontrun{fasta2df("./test.fasta")}
+#' filePath <- system.file("extdata", "test.fasta", package = "rseAnalysis")
+#' fasta <- fasta2df(filePath)
 #'
 #' @author Sijie Xu, \email{sijie.xu@mail.utoronto.ca}
 #'
@@ -86,6 +89,7 @@ vcf2df <- function(filepath) {
 #' @export
 #' @importFrom tools file_ext
 #' @importFrom Biostrings readRNAStringSet
+
 fasta2df <- function(filepath) {
 
   #Validate file path
@@ -136,13 +140,15 @@ fasta2df <- function(filepath) {
 #'
 #'
 #' @examples
-#' \dontrun{ bed2df("./test.bed")}
+#' filePath <- system.file("extdata", "test.bed", package = "rseAnalysis")
+#' bed <- bed2df(filePath)
 #'
 #' @author Sijie Xu, \email{sijie.xu@mail.utoronto.ca}
 #'
+#' @export
 #' @importFrom tidyr separate
 #' @importFrom utils read.table
-#'
+
 bed2df <- function(filepath){
 
   #Validate file path

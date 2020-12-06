@@ -28,7 +28,8 @@ Perform vcf file retrieving using read.vcfR function, result stored
 in standarlize data.frame for easy usage.
 }
 \examples{
-\dontrun{vcf2df("./test.vcf")}
+filePath <- system.file("extdata", "test.vcf", package = "rseAnalysis")
+vcf <- vcf2df(filePath)
 
 }
 \references{

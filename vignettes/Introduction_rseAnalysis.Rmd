@@ -98,18 +98,22 @@ RNA.mutated <- RNA.validate(fasta = fasta,
 Noted that message stated that the mutation has matching rate 0.714, this represents that only 71.4% of the mutation reference matches the gene sequence on sequence provided (fasta), and the remaining 28.6% of the sequence failed to match due to misalignment, differences in genome assemble in bed and fasta file, or potentially different representation of wildtype among vcf file and fasta file. For tutorial purposes, we will skip the mismatches and predict the secondary structure for the remaining. 
 
 
-``` {r structure, message=FALSE, warning=FALSE}
+``` {r structure}
 
-#Filter out the one that is misaligned, choose the first 200, or it takes forever to run
+# ================== Sample code for RNA secondary structure prediction ==========================
+#
+#  struct.ori <- suppressMessages(predictStructure(executable.path = "../inst/extdata/exe"
+#                                   , rna.name = RNA.mutated$NAME, rna.seq = RNA.mutated$SEQ))
+#  struct.alt <- suppressMessages(predictStructure(executable.path = "../inst/extdata/exe"
+#                                   , rna.name = RNA.mutated$NAME, rna.seq = RNA.mutated$MUT.SEQ))
+
+# Read prerun result from the predictStructure
 RNA.mutated <- subset(RNA.mutated, MATCH)[1:200,]
+struct.ori <- read.csv(system.file("extdata", "vignetteSampleORI.csv", package = "rseAnalysis"))
+struct.alt <- read.csv(system.file("extdata", "vignetteSampleALT.csv", package = "rseAnalysis"))
 
-#Perform structure prediction on orginal sequence
-struct.ori <- suppressMessages(predict.Structure(executable.path = "../inst/extdata/exe"
-                                   , rna.name = RNA.mutated$NAME, rna.seq = RNA.mutated$SEQ))
-
-#Perform structure prediction on mutated sequence
-struct.alt <- suppressMessages(predict.Structure(executable.path = "../inst/extdata/exe"
-                                   , rna.name = RNA.mutated$NAME, rna.seq = RNA.mutated$MUT.SEQ))
+head(struct.ori)
+head(struct.alt)
 
 ```
 
@@ -118,8 +122,10 @@ Calculation RNADistance based on the result from structural prediction is straig
 ``` {r distance, message=FALSE, warning=FALSE}
 
 #Run prediction
-RNA.distance <- predict.distance(executable.path = "", name = RNA.mutated$NAME, 
-                  struct.ori = struct.ori, struct.alt = struct.alt)
+RNA.distance <- predictDistance(name = RNA.mutated$NAME
+                                 , struct.ori = struct.ori$struct.ori
+                                 , struct.alt = struct.alt$struct.alt
+                                 , method = "gsc")
 
 ```
 

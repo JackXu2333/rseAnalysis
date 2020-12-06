@@ -1,7 +1,7 @@
 Introduction to rseAnalysis package
 ================
 Sijie Xu
-25 Nov 2020
+05 Dec 2020
 
 ## Introduction
 
@@ -145,18 +145,48 @@ remaining.
 
 ``` r
 
-#Filter out the one that is misaligned, choose the first 200, or it takes forever to run
+# ================== Sample code for RNA secondary structure prediction ==========================
+#
+#  struct.ori <- suppressMessages(predictStructure(executable.path = "../inst/extdata/exe"
+#                                   , rna.name = RNA.mutated$NAME, rna.seq = RNA.mutated$SEQ))
+#  struct.alt <- suppressMessages(predictStructure(executable.path = "../inst/extdata/exe"
+#                                   , rna.name = RNA.mutated$NAME, rna.seq = RNA.mutated$MUT.SEQ))
+
+# Read prerun result from the predictStructure
 RNA.mutated <- subset(RNA.mutated, MATCH)[1:200,]
+struct.ori <- read.csv(system.file("extdata", "vignetteSampleORI.csv", package = "rseAnalysis"))
+struct.alt <- read.csv(system.file("extdata", "vignetteSampleALT.csv", package = "rseAnalysis"))
 
-#Perform structure prediction on orginal sequence
-struct.ori <- suppressMessages(predict.Structure(executable.path = "../inst/extdata/exe"
-                                   , rna.name = RNA.mutated$NAME, rna.seq = RNA.mutated$SEQ))
-#> Loading fasta files..
-
-#Perform structure prediction on mutated sequence
-struct.alt <- suppressMessages(predict.Structure(executable.path = "../inst/extdata/exe"
-                                   , rna.name = RNA.mutated$NAME, rna.seq = RNA.mutated$MUT.SEQ))
-#> Loading fasta files..
+head(struct.ori)
+#>              X
+#> 1 hsa-let-7a-1
+#> 2 hsa-let-7a-1
+#> 3 hsa-let-7a-1
+#> 4 hsa-let-7a-1
+#> 5 hsa-let-7a-1
+#> 6 hsa-let-7a-1
+#>                                                                         struct.ori
+#> 1 (((((.(((((((((((((((((((((.....(((...((((....)))).)))))))))))))))))))))))))))))
+#> 2 (((((.(((((((((((((((((((((.....(((...((((....)))).)))))))))))))))))))))))))))))
+#> 3 (((((.(((((((((((((((((((((.....(((...((((....)))).)))))))))))))))))))))))))))))
+#> 4 (((((.(((((((((((((((((((((.....(((...((((....)))).)))))))))))))))))))))))))))))
+#> 5 (((((.(((((((((((((((((((((.....(((...((((....)))).)))))))))))))))))))))))))))))
+#> 6 (((((.(((((((((((((((((((((.....(((...((((....)))).)))))))))))))))))))))))))))))
+head(struct.alt)
+#>              X
+#> 1 hsa-let-7a-1
+#> 2 hsa-let-7a-1
+#> 3 hsa-let-7a-1
+#> 4 hsa-let-7a-1
+#> 5 hsa-let-7a-1
+#> 6 hsa-let-7a-1
+#>                                                                         struct.alt
+#> 1 (((((.(((((((((((((((((((((.....(((...((((....)))).)))))))))))))))))))))))))))))
+#> 2 (((((.(((((((((((((((((((((.....(((...((((....)))).)))))))))))))))))))))))))))))
+#> 3 (((((.((((..(((((((((((((((.....(((...((((....)))).))))))))))))))))))..)))))))))
+#> 4 (((((.((((..(((((((((((((((.....(((...((((....)))).))))))))))))))))))..)))))))))
+#> 5 (((((.(((((((((((((((((((((.....(((...((((....)))).)))))))))))))))))))))))))))))
+#> 6 (((((.(((((((((((((((((((((.....(((...((((....)))).)))))))))))))))))))))))))))))
 ```
 
 Calculation RNADistance based on the result from structural prediction
@@ -168,8 +198,10 @@ installed see more at `?predict.distance`
 ``` r
 
 #Run prediction
-RNA.distance <- predict.distance(executable.path = "", name = RNA.mutated$NAME, 
-                  struct.ori = struct.ori, struct.alt = struct.alt)
+RNA.distance <- predictDistance(name = RNA.mutated$NAME
+                                 , struct.ori = struct.ori$struct.ori
+                                 , struct.alt = struct.alt$struct.alt
+                                 , method = "gsc")
 #> Loading files..
 ```
 
@@ -193,6 +225,16 @@ Analysis.DISEXP(dis.name = RNA.mutated$NAME, dis.distance = RNA.distance,
     #> Warning: Groups with fewer than two data points have been dropped.
     
     #> Warning: Groups with fewer than two data points have been dropped.
+    
+    #> Warning: Groups with fewer than two data points have been dropped.
+    
+    #> Warning: Groups with fewer than two data points have been dropped.
+    #> Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning -
+    #> Inf
+    
+    #> Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning -
+    #> Inf
+    
     #> Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning -
     #> Inf
     
@@ -202,7 +244,7 @@ Analysis.DISEXP(dis.name = RNA.mutated$NAME, dis.distance = RNA.distance,
 <img src="figuresanalysis-2.png" width="100%" /><img src="figuresanalysis-3.png" width="100%" /><img src="figuresanalysis-4.png" width="100%" />
 
     #>          correlation   p_value
-    #> distance  -0.1104666 0.1194204
+    #> distance  -0.1062221 0.1343854
 
 Analysis.DISEXP uses the absolute difference in expression in modelling
 change in expression between the tumour and normal samples from BRCA
@@ -293,37 +335,38 @@ sessionInfo()
 #>  [45] xfun_0.18                   stringr_1.4.0              
 #>  [47] ps_1.4.0                    testthat_2.3.2             
 #>  [49] lifecycle_0.2.0             devtools_2.3.2             
-#>  [51] XML_3.99-0.5                zlibbioc_1.34.0            
-#>  [53] MASS_7.3-53                 scales_1.1.1               
-#>  [55] parallel_4.0.2              SummarizedExperiment_1.18.2
-#>  [57] RColorBrewer_1.1-2          yaml_2.2.1                 
-#>  [59] memoise_1.1.0               gridExtra_2.3              
-#>  [61] ggplot2_3.3.2               reshape_0.8.8              
-#>  [63] stringi_1.5.3               RSQLite_2.2.1              
-#>  [65] genefilter_1.70.0           S4Vectors_0.26.1           
-#>  [67] desc_1.2.0                  permute_0.9-5              
-#>  [69] BiocGenerics_0.34.0         pkgbuild_1.1.0             
-#>  [71] BiocParallel_1.22.0         GenomeInfoDb_1.24.2        
-#>  [73] rlang_0.4.8                 pkgconfig_2.0.3            
-#>  [75] matrixStats_0.57.0          bitops_1.0-6               
-#>  [77] evaluate_0.14               lattice_0.20-41            
-#>  [79] purrr_0.3.4                 labeling_0.3               
-#>  [81] bit_4.0.4                   processx_3.4.4             
-#>  [83] tidyselect_1.1.0            plyr_1.8.6                 
-#>  [85] magrittr_1.5                DESeq2_1.28.1              
-#>  [87] R6_2.4.1                    IRanges_2.22.2             
-#>  [89] generics_0.0.2              DelayedArray_0.14.1        
-#>  [91] DBI_1.1.0                   pillar_1.4.6               
-#>  [93] withr_2.3.0                 mgcv_1.8-33                
-#>  [95] survival_3.2-7              RCurl_1.98-1.2             
-#>  [97] tibble_3.0.4                crayon_1.3.4               
-#>  [99] R.rsp_0.44.0                rmarkdown_2.4              
-#> [101] vcfR_1.12.0                 usethis_1.6.3              
-#> [103] locfit_1.5-9.4              grid_4.0.2                 
-#> [105] blob_1.2.1                  callr_3.5.1                
-#> [107] vegan_2.5-6                 digest_0.6.25              
-#> [109] xtable_1.8-4                R.cache_0.14.0             
-#> [111] tidyr_1.1.2                 R.utils_2.10.1             
-#> [113] stats4_4.0.2                munsell_0.5.0              
-#> [115] viridisLite_0.3.0           sessioninfo_1.1.1
+#>  [51] XML_3.99-0.5                NameNeedle_1.2.6           
+#>  [53] zlibbioc_1.34.0             MASS_7.3-53                
+#>  [55] scales_1.1.1                parallel_4.0.2             
+#>  [57] SummarizedExperiment_1.18.2 gscVisualizer_0.1.0        
+#>  [59] RColorBrewer_1.1-2          yaml_2.2.1                 
+#>  [61] memoise_1.1.0               gridExtra_2.3              
+#>  [63] ggplot2_3.3.2               reshape_0.8.8              
+#>  [65] stringi_1.5.3               RSQLite_2.2.1              
+#>  [67] genefilter_1.70.0           S4Vectors_0.26.1           
+#>  [69] desc_1.2.0                  permute_0.9-5              
+#>  [71] BiocGenerics_0.34.0         pkgbuild_1.1.0             
+#>  [73] BiocParallel_1.22.0         GenomeInfoDb_1.24.2        
+#>  [75] rlang_0.4.8                 pkgconfig_2.0.3            
+#>  [77] matrixStats_0.57.0          bitops_1.0-6               
+#>  [79] evaluate_0.14               lattice_0.20-41            
+#>  [81] purrr_0.3.4                 labeling_0.3               
+#>  [83] bit_4.0.4                   processx_3.4.4             
+#>  [85] tidyselect_1.1.0            plyr_1.8.6                 
+#>  [87] magrittr_1.5                DESeq2_1.28.1              
+#>  [89] R6_2.4.1                    IRanges_2.22.2             
+#>  [91] generics_0.0.2              DelayedArray_0.14.1        
+#>  [93] DBI_1.1.0                   pillar_1.4.6               
+#>  [95] withr_2.3.0                 mgcv_1.8-33                
+#>  [97] survival_3.2-7              RCurl_1.98-1.2             
+#>  [99] tibble_3.0.4                crayon_1.3.4               
+#> [101] R.rsp_0.44.0                rmarkdown_2.4              
+#> [103] vcfR_1.12.0                 usethis_1.6.3              
+#> [105] locfit_1.5-9.4              grid_4.0.2                 
+#> [107] blob_1.2.1                  callr_3.5.1                
+#> [109] vegan_2.5-6                 digest_0.6.25              
+#> [111] xtable_1.8-4                R.cache_0.14.0             
+#> [113] tidyr_1.1.2                 R.utils_2.10.1             
+#> [115] stats4_4.0.2                munsell_0.5.0              
+#> [117] viridisLite_0.3.0           sessioninfo_1.1.1
 ```

@@ -27,7 +27,8 @@ Perform bed file retrieving using result stored
 in standardized list for easy usage.
 }
 \examples{
-\dontrun{ bed2df("./test.bed")}
+filePath <- system.file("extdata", "test.bed", package = "rseAnalysis")
+bed <- bed2df(filePath)
 
 }
 \author{

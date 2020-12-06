@@ -44,10 +44,10 @@ and input validated method, more checking are embeded to insure the
 mutation is applied correctly.
 }
 \examples{
-\dontrun{mutated <- RNA.validate(
-              fasta = fasta2df("./test.fasta"),
-              vcf = vcf2df("./test.vcf",
-              bed = bed2df("./test.bed"))}
+mutated <- RNA.validate(
+              fasta = fasta2df(system.file("extdata", "test.fasta", package = "rseAnalysis")),
+              vcf = vcf2df(system.file("extdata", "test.vcf", package = "rseAnalysis")),
+              bed = bed2df(system.file("extdata", "test.bed", package = "rseAnalysis")))
 
 }
 \references{
