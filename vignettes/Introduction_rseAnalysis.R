@@ -1,8 +1,8 @@
 ## ---- include = FALSE---------------------------------------------------------
+library("knitr")
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "figures",
   out.width = "100%"
 )
 
@@ -10,6 +10,7 @@ knitr::opts_chunk$set(
 
 #Source library
 library(rseAnalysis)
+library(ggplot2)
 
 #Load sample data file
 vcf <- rseAnalysis::vcf2df(system.file("extdata", "hsa_GRCh37.vcf", package = "rseAnalysis"))
@@ -57,7 +58,7 @@ RNA.distance <- predictDistance(name = RNA.mutated$NAME
                                  , method = "gsc")
 
 
-## ----analysis-----------------------------------------------------------------
+## ----analysis,  warning=FALSE-------------------------------------------------
 
 #Load expression data
 
@@ -72,7 +73,6 @@ result <- Analysis.DISEXP(dis.name = RNA.mutated$NAME, dis.distance = RNA.distan
 #Display statistical result
 result$stats
 
-#Display plots
 result$plots
 
 

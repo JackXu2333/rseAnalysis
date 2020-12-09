@@ -134,6 +134,7 @@ predictStructure <- function (executable.path = "", fasta.file = "", rna.name = 
 #' ViennaRNA Package 2.0 Algorithms for Molecular Biology, 6:1 26, 2011, doi:10.1186/1748-7188-6-26}
 #' {Steipe B., ABC R Project, A Bioinformatics Course: Applied Bioinformatics http://steipe.biochemistry.utoronto.ca/abc/index.php/Bioinformatics_Main_Page}
 #'
+#' @importFrom utils flush.console
 
 predictDistance_RNADis <- function(executable.path = "", name = c(), struct.ori = c(), struct.alt = c()){
 
@@ -150,7 +151,7 @@ predictDistance_RNADis <- function(executable.path = "", name = c(), struct.ori 
         p1 <- paste(rep("#", p), collapse = "")
         p2 <- paste(rep("-", nCh - p), collapse = "")
         cat(sprintf("\r|%s%s|", p1, p2))
-        flush.console()
+        utils::flush.console()
       }
     }
     else { # done
@@ -267,10 +268,10 @@ predictDistance_gsc <- function(name = c(), struct.ori = c(), struct.alt = c()){
 #'
 #' @examples
 #' dot <- predictDistance(name = c("hsa-let-7b", "hsa-let-7a-2")
-#' , struct.ori = c("(((((.((((((((((((((((((((((((((((((.....))).)))).))).....)))))))))))))))))))))))))",
-#'           "(((((.((((((((((((((((((((((((((((((.....))).)))).))).....)))))))))))))))))))))))))")
-#' , struct.alt = c("(((((.(((((((((((((((((((..(((((((((.....)))))).).....))...))))))))))))))))))))))))",
-#'            "(((((.((((((((.(((((((((((((((((((((.....)))))).).))).....))))))))))).)))))))))))))"))
+#' , struct.ori = c("(((((.(((((((((((((((((((((((.....))).)))).))).....))))))))))))))))))",
+#' "(((((.(((((((((((((((((((((((.....))).)))).))).....))))))))))))))))))")
+#' , struct.alt = c("(((((.((((((((((((..(((((((((.....)))))).).....))...)))))))))))))))))",
+#' "(((((.((((((((.((((((((((((((.....)))))).).))).....))))))))))).))))))"))
 #'
 #' @author Sijie Xu, \email{sijie.xu@mail.utoronto.ca}
 #'

@@ -95,6 +95,7 @@ DNA2RNA <- function(DNA.Seq){
 #' {Steipe B., ABC R Project, A Bioinformatics Course: Applied Bioinformatics http://steipe.biochemistry.utoronto.ca/abc/index.php/Bioinformatics_Main_Page}
 #'
 #' @export
+#' @importFrom utils flush.console
 
 RNA.validate <- function(fasta, vcf, bed){
 
@@ -159,7 +160,7 @@ RNA.validate <- function(fasta, vcf, bed){
         p1 <- paste(rep("#", p), collapse = "")
         p2 <- paste(rep("-", nCh - p), collapse = "")
         cat(sprintf("\r|%s%s|", p1, p2))
-        flush.console()
+        utils::flush.console()
       }
     }
     else { # done

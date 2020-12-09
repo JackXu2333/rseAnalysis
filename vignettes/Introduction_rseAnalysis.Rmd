@@ -2,7 +2,10 @@
 title: "Introduction to rseAnalysis package"
 author: "Sijie Xu"
 date: "`r format(Sys.time(), '%d %b %Y')`"
-output: github_document
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    number_sections: false
 vignette: >
   %\VignetteIndexEntry{Introduction to rseAnalysis package}
   %\VignetteEngine{knitr::rmarkdown}
@@ -10,10 +13,10 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
+library("knitr")
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "figures",
   out.width = "100%"
 )
 ```
@@ -68,6 +71,7 @@ The function *vcf2df*, *fasta2df*, and *bed2df* provides measures to read file w
 
 #Source library
 library(rseAnalysis)
+library(ggplot2)
 
 #Load sample data file
 vcf <- rseAnalysis::vcf2df(system.file("extdata", "hsa_GRCh37.vcf", package = "rseAnalysis"))
@@ -131,7 +135,7 @@ RNA.distance <- predictDistance(name = RNA.mutated$NAME
 
 ## RNA distance and gene expression analysis 
 
-``` {r analysis}
+``` {r analysis,  warning=FALSE}
 
 #Load expression data
 
@@ -146,12 +150,11 @@ result <- Analysis.DISEXP(dis.name = RNA.mutated$NAME, dis.distance = RNA.distan
 #Display statistical result
 result$stats
 
-#Display plots
 result$plots
 
 ```
 
-Analysis.DISEXP uses the absolute difference in expression in modelling change in expression between the tumour and normal samples from BRCA patients. Here we use "reads_per_million_miRNA_mapped" as the input because it is standardized and can use to compare between cases. !Beware that for the analysis to work, one has to make sure the gene expression data and distance data are collected from the same type of mutation, or from the same sample (usually a sample will be insufficient in retrieving both expression and sequencing information), or it affects the outcome of the analysis dramatically. 
+Analysis.DISEXP uses the absolute difference in expression in modeling change in expression between the tumour and normal samples from BRCA patients. Here we use "reads_per_million_miRNA_mapped" as the input because it is standardized and can use to compare between cases. !Beware that for the analysis to work, one has to make sure the gene expression data and distance data are collected from the same type of mutation, or from the same sample (usually a sample will be insufficient in retrieving both expression and sequencing information), or it affects the outcome of the analysis dramatically. 
 
 Gere the Analysis.DISEXP generate both text and graphical output, with text output indicating the beta and p_value of the resulting regression model. From this example, the correlation between RNA distance is -0.11 with p-value of 0.12. The graphical output shows the prediction model and confidence interval on the scatter plot, RNA distance distribution by RNA type and boxplots showing the potential outliers from gene expression and RNA distance data set.
 
