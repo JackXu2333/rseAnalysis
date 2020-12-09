@@ -1,5 +1,4 @@
 ## ---- include = FALSE---------------------------------------------------------
-library("knitr")
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -74,7 +73,7 @@ result <- Analysis.DISEXP(dis.name = RNA.mutated$NAME, dis.distance = RNA.distan
 result$stats
 
 #Display images from result
-result$plots
+#result$plots
 
 
 ## -----------------------------------------------------------------------------

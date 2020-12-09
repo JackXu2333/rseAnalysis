@@ -3,12 +3,17 @@ title: "Introduction to rseAnalysis package"
 author: "Sijie Xu"
 date: "`r format(Sys.time(), '%d %b %Y')`"
 output: 
-   github_document
-
+  rmarkdown::html_vignette:
+    toc: true
+    number_sections: false
+    fig_caption: yes
+vignette: >
+  %\VignetteIndexEntry{Introduction to rseAnalysis package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}
-library("knitr")
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -146,9 +151,14 @@ result <- Analysis.DISEXP(dis.name = RNA.mutated$NAME, dis.distance = RNA.distan
 result$stats
 
 #Display images from result
-result$plots
+#result$plots
 
 ```
+<img src="figuresanalysis-1.png" alt="Differential normalize gene expression vs RNA Gene Distance Linear Model" width="600"/>
+<img src="figuresanalysis-2.png" alt="Boxplot of Differential normalize gene expression read by RNA" width="300"/>
+<img src="figuresanalysis-3.png" alt="Boxplot of RNA gene distance read by RNA" width="300"/>
+<img src="figuresanalysis-4.png" alt="Density plot of RNA gene distance read by RNA" width="300"/>
+<img src="figuresanalysis-5.png" alt="Density plot of RNA gene distance read by RNA" width="300"/>
 
 Analysis.DISEXP uses the absolute difference in expression in modeling change in expression between the tumour and normal samples from BRCA patients. Here we use "reads_per_million_miRNA_mapped" as the input because it is standardized and can use to compare between cases. !Beware that for the analysis to work, one has to make sure the gene expression data and distance data are collected from the same type of mutation, or from the same sample (usually a sample will be insufficient in retrieving both expression and sequencing information), or it affects the outcome of the analysis dramatically. 
 

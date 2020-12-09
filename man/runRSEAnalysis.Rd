@@ -15,7 +15,17 @@ Analysis.DISEXP is a complete analysis based on user selection of
 linear or log regression. The gene expression is calculated as the
 absolute differences between sampled and normal gene expression data.
 Analysis also export sets of graphs to facilitate in model selection
-and analysis result validation.
+and analysis result validation. Inputs:
+}
+\details{
+FILE NormalRNAStructureFile .csv file with two column, RNA name and orginal structure in dot/bracket
+FILE MutatedRNAStructureFile .csv file with two column, RNA name and mutated structure in dot/bracket
+FILE geneExpressonFile .csv file with at least three column, $Read.Type indicates whether
+it is "reads_per_million_miRNA_mapped" or "read_count", $Sample and $Normal stores the differential gene
+expression information.
+SELCETOR ModelMethod Selection of linear or gaussian log link function for regression (linear or log)
+SELECTOR PredictionMethod Selection of gscVistualizer or RNADistance to predict secondary structure of RNA
+CHECKBOX Run example to run shiny app under example files
 }
 \examples{
 \dontrun{

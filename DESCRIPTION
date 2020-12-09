@@ -10,7 +10,8 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 URL: https://github.com/JackXu2333/dseAnalysis
-biocViews: 
+biocViews: Software, StatisticalMethod
+Remotes:  github::Deemolotus/gscVisualizer
 Imports: 
     ggplot2,
     dplyr,
