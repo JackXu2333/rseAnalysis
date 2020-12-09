@@ -109,7 +109,7 @@ server <- function(input, output) {
 
     expression <- subset(expression, Read.Type == "reads_per_million_miRNA_mapped")[1:200, ]
 
-    result <- Analysis.DISEXP(dis.name = RNA.mutated$NAME, dis.distance = RNA.distance,
+    result <- Analysis.DISEXP(dis.name = struct.alt$X, dis.distance = RNA.distance,
                               exp.tumor = expression$Sample, exp.sample = expression$Normal, method = input$modelMethod, showPlot = FALSE)
 
     result <- list(stats = result$stats, plots = result$plots
