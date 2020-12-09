@@ -73,6 +73,7 @@ result <- Analysis.DISEXP(dis.name = RNA.mutated$NAME, dis.distance = RNA.distan
 #Display statistical result
 result$stats
 
+#Display images from result
 result$plots
 
 

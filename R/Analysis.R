@@ -112,7 +112,7 @@ Analysis.DISEXP <- function(dis.name, dis.distance, exp.tumor, exp.sample, metho
   #Density plot on read_diff by different RNA
   density.genexp <- ggplot2::ggplot(disexp.df, ggplot2::aes_string(x="read_diff", color="name")) +
     ggplot2::geom_density() +
-    ggplot2::ggtitle("Density of RNA gene distance read \n by RNA") +
+    ggplot2::ggtitle("Density plot of differential normalize gene expression read \n by RNA") +
     ggplot2::xlab("RNA distance") + ggplot2::ylab("Density")
 
   #Generate the plots according to selection of separation

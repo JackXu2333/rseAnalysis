@@ -3,13 +3,8 @@ title: "Introduction to rseAnalysis package"
 author: "Sijie Xu"
 date: "`r format(Sys.time(), '%d %b %Y')`"
 output: 
-  rmarkdown::html_vignette:
-    toc: true
-    number_sections: false
-vignette: >
-  %\VignetteIndexEntry{Introduction to rseAnalysis package}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+   github_document
+
 ---
 
 ```{r, include = FALSE}
@@ -150,6 +145,7 @@ result <- Analysis.DISEXP(dis.name = RNA.mutated$NAME, dis.distance = RNA.distan
 #Display statistical result
 result$stats
 
+#Display images from result
 result$plots
 
 ```
