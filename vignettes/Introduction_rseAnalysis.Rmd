@@ -140,8 +140,14 @@ expression <- read.csv(system.file("extdata", "test.csv", package = "rseAnalysis
 #Use only standardize read
 expression <- subset(expression, Read.Type == "reads_per_million_miRNA_mapped")[1:200, ]
 
-Analysis.DISEXP(dis.name = RNA.mutated$NAME, dis.distance = RNA.distance, 
-                exp.tumor <- expression$Sample, exp.sample <- expression$Normal, method = "linear", seperate = TRUE)
+result <- Analysis.DISEXP(dis.name = RNA.mutated$NAME, dis.distance = RNA.distance, 
+                exp.tumor = expression$Sample, exp.sample = expression$Normal, method = "linear", showPlot = FALSE)
+
+#Display statistical result
+result$stats
+
+#Display plots
+result$plots
 
 ```
 

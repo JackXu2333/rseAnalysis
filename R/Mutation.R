@@ -91,7 +91,8 @@ DNA2RNA <- function(DNA.Seq){
 #'
 #' @author Sijie Xu, \email{sijie.xu@mail.utoronto.ca}
 #'
-#' @references Xu, S. Tan, Z., BCB430 "Analysis.zip/File Validation.rmd" <https://github.com/Deemolotus/BCB330Y-and-BCB430Y>
+#' @references {Xu, S. Tan, Z., BCB430 "Analysis.zip/File Validation.rmd" <https://github.com/Deemolotus/BCB330Y-and-BCB430Y>}
+#' {Steipe B., ABC R Project, A Bioinformatics Course: Applied Bioinformatics http://steipe.biochemistry.utoronto.ca/abc/index.php/Bioinformatics_Main_Page}
 #'
 #' @export
 
@@ -145,6 +146,27 @@ RNA.validate <- function(fasta, vcf, bed){
 
   }
 
+  #Helper Function that draw a progress bar in the console
+  #Referenced from ABC project (.utility 4.07) by Professor Steipe B. at University of Toronto
+  pBar <- function(i, l, nCh = 50) {
+    # i: the current iteration
+    # l: the total number of iterations
+    # nCh: width of the progress bar
+    ticks <- round(seq(1, l-1, length.out = nCh))
+    if (i < l) {
+      if (any(i == ticks)) {
+        p <- which(i == ticks)[1]  # use only first, in case there are ties
+        p1 <- paste(rep("#", p), collapse = "")
+        p2 <- paste(rep("-", nCh - p), collapse = "")
+        cat(sprintf("\r|%s%s|", p1, p2))
+        flush.console()
+      }
+    }
+    else { # done
+      cat("\n")
+    }
+  }
+
   #Counnting the number of matches and the matched itemed
   match.count = 0
   error.count = 0
@@ -158,6 +180,9 @@ RNA.validate <- function(fasta, vcf, bed){
                             , MUT.POS=character(), MUT.ID=character())
 
   for (i in seq(nrow(RNA))){#Iterate through mRNA
+
+    #Show overall iteration
+    pBar(i, nrow(RNA))
 
         #Locate mutation in mRNA
         mutation <- vcf[which(RNA$ENDPOS[i] >= vcf$POS & vcf$POS >= RNA$STAPOS[i] & vcf$CHROM == RNA$CHROM[i]), ]
@@ -217,3 +242,4 @@ RNA.validate <- function(fasta, vcf, bed){
 
 }
 
+# [END]

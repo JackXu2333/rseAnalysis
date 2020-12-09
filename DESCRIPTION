@@ -22,7 +22,8 @@ Imports:
     reshape,
     gridExtra,
     R.rsp,
-    gscVisualizer
+    gscVisualizer,
+    shiny
 RoxygenNote: 7.1.1
 Suggests: 
     testthat,

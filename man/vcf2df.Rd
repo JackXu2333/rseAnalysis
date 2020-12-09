@@ -33,8 +33,8 @@ vcf <- vcf2df(filePath)
 
 }
 \references{
-Knaus BJ, Grünwald NJ (2017). “VCFR: a package to manipulate and visualize variant call format data in R." _Molecular Ecology Resources_, *17*(1), 44-53. ISSN 757,
-<URL: http://dx.doi.org/10.1111/1755-0998.12549>.
+{Knaus BJ, Grünwald NJ (2017). “VCFR: a package to manipulate and visualize variant call format data in R." _Molecular Ecology Resources_, *17*(1), 44-53. ISSN 757,
+<URL: http://dx.doi.org/10.1111/1755-0998.12549>.}
 }
 \author{
 Sijie Xu, \email{sijie.xu@mail.utoronto.ca}

@@ -22,53 +22,21 @@ test_that("File input for secondary structure is correct", {
 
 })
 
-if (TRUE) skip("Unable to test under current envirment")
-
-test_that("Secondary structure is working", {
-
-  #Load datapath
-  #setwd("./test/source")
-
-  system(paste0("export DATAPATH=", gsub(" ", "\\ ", getwd(), fixed = TRUE), "/tests/source/data_tables"))
-
-  #Load via file
-  mutate.file <- predict.Structure(executable.path = "../../inst/extdata/exe", fasta.file = "../../inst/extdata/test.fasta")
-
-  #Load via file
-  mutate.input <- predict.Structure(executable.path = "../../inst/extdata/exe",
-                                    rna.name = c("hsa-let-7a-1", "hsa-let-7a-2", "hsa-let-7a-3", "hsa-let-7b"),
-                                    rna.seq = c("UGGGAUGAGGUAGUAGGUUGUAUAGUUUUAGGGUCACACCCACCACUGGGAGAUAACUAUACAAUCUACUGUCUUUCCUA",
-                                            "AGGUUGAGGUAGUAGGUUGUAUAGUUUAGAAUUACAUCAAGGGAGAUAACUGUACAGCCUCCUAGCUUUCCU",
-                                            "GGGUGAGGUAGUAGGUUGUAUAGUUUGGGGCUCUGCCCUGCUAUGGGAUAACUAUACAAUCUACUGUCUUUCCU",
-                                            "CGGGGUGAGGUAGUAGGUUGUGUGGUUUCAGGGCAGUGAUGUUGCCCCUCGGAAGAUAACUAUACAACCUACUGCCUUCCCUG"))
-  #make sure work as expected
-  expect_identical(mutate.file, c("(((((.(((((((((((((((((((((.....(((...((((....)))).)))))))))))))))))))))))))))))",
-                              "(((..(((.(((.(((((((((((((.........(((......)))))))))))))))).))).))).)))",
-                              "(((.(((((((((((((((((((((((((((...)))))).........))))))))))))))))))))).)))",
-                              "(((((.((((((((((((((((((((((((((((((.....))).)))).))).....)))))))))))))))))))))))))"))
-
-  #make sure work as expected
-  expect_identical(mutate.file, mutate.input)
-
-})
-
-
 test_that("File input for distance is correct", {
 
   #executable path error
-  expect_error(mutate <- predict.distance(executable.path = ".\foo"))
+  expect_error(mutate <- predictDistance(executable.path = ".\foo"))
 
   #missing attribute
-  expect_error(mutate <- predict.distance(executable.path = ""))
+  expect_error(mutate <- predictDistance(executable.path = ""))
 
   #Input file size misalignment
-  expect_error(mutate <- predict.distance(executable.path = "", name = c("heyhey", "blueblue")
+  expect_error(mutate <- predictDistance(executable.path = "", name = c("heyhey", "blueblue")
                                           , struct.ori = c("JJJ"), struct.alt = c("AAA")))
 
   #Input file type missed
-  expect_error(mutate <- predict.distance(executable.path = "", name = c("heyhey", "blueblue")
+  expect_error(mutate <- predictDistance(executable.path = "", name = c("heyhey", "blueblue")
                                           , struct.ori = c(1, 2), struct.alt = c("AAA", "BBB")))
-
 
 })
 
@@ -76,7 +44,7 @@ test_that("File input for distance is correct", {
 test_that("RNA distance prediction is working", {
 
   #Load file
-  distance <- predict.distance(executable.path = "",
+  distance <- predictDistance(executable.path = "",
                                       name = c("hsa-let-7a-1", "hsa-let-7a-2"),
                                struct.ori = c("(((((.((((((((((((((((((((((((((((((.....))).)))).))).....)))))))))))))))))))))))))",
                                                "(((((.((((((((((((((((((((((((((((((.....))).)))).))).....)))))))))))))))))))))))))"),
@@ -89,3 +57,31 @@ test_that("RNA distance prediction is working", {
 
 
 })
+
+
+if (TRUE) skip("Unable to test under current envirment")
+
+test_that("Secondary structure is working", {
+
+
+  #Load via file
+  mutate.file <- predict.Structure(executable.path = "../../inst/extdata/exe", fasta.file = "../../inst/extdata/test.fasta")
+
+  #Load via file
+  mutate.input <- predict.Structure(executable.path = "../../inst/extdata/exe",
+                                    rna.name = c("hsa-let-7a-1", "hsa-let-7a-2", "hsa-let-7a-3", "hsa-let-7b"),
+                                    rna.seq = c("UGGGAUGAGGUAGUAGGUUGUAUAGUUUUAGGGUCACACCCACCACUGGGAGAUAACUAUACAAUCUACUGUCUUUCCUA",
+                                                "AGGUUGAGGUAGUAGGUUGUAUAGUUUAGAAUUACAUCAAGGGAGAUAACUGUACAGCCUCCUAGCUUUCCU",
+                                                "GGGUGAGGUAGUAGGUUGUAUAGUUUGGGGCUCUGCCCUGCUAUGGGAUAACUAUACAAUCUACUGUCUUUCCU",
+                                                "CGGGGUGAGGUAGUAGGUUGUGUGGUUUCAGGGCAGUGAUGUUGCCCCUCGGAAGAUAACUAUACAACCUACUGCCUUCCCUG"))
+  #make sure work as expected
+  expect_identical(mutate.file, c("(((((.(((((((((((((((((((((.....(((...((((....)))).)))))))))))))))))))))))))))))",
+                                  "(((..(((.(((.(((((((((((((.........(((......)))))))))))))))).))).))).)))",
+                                  "(((.(((((((((((((((((((((((((((...)))))).........))))))))))))))))))))).)))",
+                                  "(((((.((((((((((((((((((((((((((((((.....))).)))).))).....)))))))))))))))))))))))))"))
+
+  #make sure work as expected
+  expect_identical(mutate.file, mutate.input)
+
+})
+

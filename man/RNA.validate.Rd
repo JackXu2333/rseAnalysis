@@ -51,7 +51,8 @@ mutated <- RNA.validate(
 
 }
 \references{
-Xu, S. Tan, Z., BCB430 "Analysis.zip/File Validation.rmd" <https://github.com/Deemolotus/BCB330Y-and-BCB430Y>
+{Xu, S. Tan, Z., BCB430 "Analysis.zip/File Validation.rmd" <https://github.com/Deemolotus/BCB330Y-and-BCB430Y>}
+{Steipe B., ABC R Project, A Bioinformatics Course: Applied Bioinformatics http://steipe.biochemistry.utoronto.ca/abc/index.php/Bioinformatics_Main_Page}
 }
 \author{
 Sijie Xu, \email{sijie.xu@mail.utoronto.ca}

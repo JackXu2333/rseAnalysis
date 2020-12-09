@@ -10,7 +10,7 @@ Analysis.DISEXP(
   exp.tumor,
   exp.sample,
   method = "linear",
-  seperate = TRUE
+  showPlot = FALSE
 )
 }
 \arguments{
@@ -22,21 +22,28 @@ Analysis.DISEXP(
 
 \item{exp.sample}{Set of reads from gene expression from normal samples (usually blood sample)}
 
-\item{method}{Selection of linear or gaussian log link function for regression}
+\item{method}{Selection of linear or gaussian log link function for regression (linear or log)}
 
-\item{seperate}{TRUE and FALSE varible if TRUE the output image will be shown separately}
+\item{showPlot}{TRUE and FALSE variable if TRUE the output image will be shown on the run}
 }
 \value{
-Show of four graph for validation, includes
+Returns an S3 object of class DISEXP with results.
+list of output stats from the model
 \itemize{
-  \item Scatter plot of gene expression data on RNA distance data
-  \item Boxplot of gene expression data by each RNA
-  \item Boxplot of RNA distance data by each RNA
-  \item Density plot of RNA distance data, labelled by each RNA
+\item stats
+\itemize{
+  \item Correlation - Beta value of the regression model based on data
+  \item PValue - P value calculated associated with the correlation
 }
-list of output indicating the corrolation\itemize{
-  \item correlation - Beta value of the regression model based on data
-  \item p_value - P value calculated associated with the correlation
+Show of four graph for validation
+\item plots
+\itemize{
+  \item ScatterPlot plots of gene expression data on RNA distance data with fitted line
+  \item GeneExpressionBoxPlot Boxplot checking outliars on gene expression
+  \item RNADistanceBoxPlot Boxplot checking outliars on distance
+  \item RNADistanceDensityPlot  Density plot on distance by different RNA
+  \item GeneExpressionDensityPlot Density plot on gene expression by different RNA
+}
 }
 }
 \description{
@@ -47,12 +54,12 @@ Analysis also export sets of graphs to facilitate in model selection
 and analysis result validation.
 }
 \examples{
-\dontrun{disexp <- Analysis.DISEXP(
+disexp <- Analysis.DISEXP(
              dis.name = c("hsa-let-7a-1", "hsa-let-7a-1",
              "hsa-let-7a-3", "hsa-let-7a-3", "hsa-let-7a-3"),
-             dis.distance = as.integer(c(10, 35, 91, 100, 92, 5)),
+             dis.distance = as.integer(c(10, 35, 91, 100, 92)),
              exp.tumor = c(98691, 49201, 57540, 148702, 97721),
-             exp.sample = c(23495, 23310, 13274, 19337, 14389))}
+             exp.sample = c(23495, 23310, 13274, 19337, 14389))
 
 }
 \author{

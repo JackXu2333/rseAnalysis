@@ -38,13 +38,13 @@ omit.
 
 }
 \references{
-Duan, S., Mathews, D.H. and Turner, D.H. (2006).
+{Duan, S., Mathews, D.H. and Turner, D.H. (2006).
 Interpreting oligonucleotide microarray data to determine RNA secondary structure: application to the 3' end of Bombyx mori R2 RNA.
-Biochemistry, 45:9819-9832.
+Biochemistry, 45:9819-9832.}
 
-Wuchty, S., Fontana, W., Hofacker, I.L. and Schuster, P. (1999).
+{Wuchty, S., Fontana, W., Hofacker, I.L. and Schuster, P. (1999).
 Complete suboptimal folding of RNA and the stability of secondary structures.
-Biopolymers, 49:145-165.
+Biopolymers, 49:145-165.}
 }
 \author{
 Sijie Xu, \email{sijie.xu@mail.utoronto.ca}

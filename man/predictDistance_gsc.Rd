@@ -18,20 +18,12 @@ Returns a list of RNA distance, ordered according to the input name sequence
 }
 \description{
 Perform RNA distance calculation based on imported file or
-input of RNA orginal sequence and alternative sequence. The RNA
+input of RNA original sequence and alternative sequence. The RNA
 distance calculation is based on the gscVisualizer R package
 algorithm by Zhiwen Tan, a BCB student from UofT.
 }
-\examples{
-dot <- predictDistance_gsc(name = c("hsa-let-7b", "hsa-let-7a-2")
-, struct.ori = c("(((((.((((((((((((((((((((((((((((((.....))).)))).))).....)))))))))))))))))))))))))",
-          "(((((.((((((((((((((((((((((((((((((.....))).)))).))).....)))))))))))))))))))))))))")
-, struct.alt = c("(((((.(((((((((((((((((((..(((((((((.....)))))).).....))...))))))))))))))))))))))))",
-           "(((((.((((((((.(((((((((((((((((((((.....)))))).).))).....))))))))))).)))))))))))))"))
-
-}
 \references{
-Z Tan (2020). gscVisualizer: Visualize The Difference among Gene Sequences. R package version 0.1.0.
+{Z Tan (2020). gscVisualizer: Visualize The Difference among Gene Sequences. R package version 0.1.0.}
 }
 \author{
 Sijie Xu, \email{sijie.xu@mail.utoronto.ca}

@@ -26,7 +26,7 @@ fasta <- fasta2df(filePath)
 
 }
 \references{
-H. Pagès, P. Aboyoun, R. Gentleman and S. DebRoy (2020). Biostrings: Efficient manipulation of biological strings. R package version 2.56.0.
+{H. Pagès, P. Aboyoun, R. Gentleman and S. DebRoy (2020). Biostrings: Efficient manipulation of biological strings. R package version 2.56.0.}
 }
 \author{
 Sijie Xu, \email{sijie.xu@mail.utoronto.ca}

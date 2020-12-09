@@ -39,21 +39,19 @@ test_that("Analysis working", {
   exp.sample <- expression$Normal
 
   #Test linear option
-  RNA <- Analysis.DISEXP(dis.name = dis.name, dis.distance = dis.distance,
+  RNA.lm <- Analysis.DISEXP(dis.name = dis.name, dis.distance = dis.distance,
                                     exp.tumor = exp.tumor, exp.sample = exp.sample, method = "linear")
 
-  expect_equal(round(RNA$correlation, digits = 3), -0.465)
-  expect_equal(round(RNA$p_value, digits = 3), 0.176)
+  expect_equal(round(RNA.lm$stats$Correlation, digits = 3), -0.465)
+  expect_equal(round(RNA.lm$stats$PValue, digits = 3), 0.176)
 
 
   #Test log option
-  RNA <- Analysis.DISEXP(dis.name = dis.name, dis.distance = dis.distance,
+  RNA.log <- Analysis.DISEXP(dis.name = dis.name, dis.distance = dis.distance,
                          exp.tumor = exp.tumor, exp.sample = exp.sample, method = "log")
 
-  expect_equal(round(RNA$correlation, digits = 3), -0.013)
-  expect_equal(round(RNA$p_value, digits = 3), 0.203)
-
-
+  expect_equal(round(RNA.log$stats$Correlation, digits = 3), -0.013)
+  expect_equal(round(RNA.log$stats$PValue, digits = 3), 0.203)
 
 
 })

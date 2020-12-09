@@ -22,14 +22,13 @@
 #' @author Sijie Xu, \email{sijie.xu@mail.utoronto.ca}
 #'
 #' @references
-#'
-#' Duan, S., Mathews, D.H. and Turner, D.H. (2006).
+#' {Duan, S., Mathews, D.H. and Turner, D.H. (2006).
 #' Interpreting oligonucleotide microarray data to determine RNA secondary structure: application to the 3' end of Bombyx mori R2 RNA.
-#' Biochemistry, 45:9819-9832.
+#' Biochemistry, 45:9819-9832.}
 #'
-#' Wuchty, S., Fontana, W., Hofacker, I.L. and Schuster, P. (1999).
+#' {Wuchty, S., Fontana, W., Hofacker, I.L. and Schuster, P. (1999).
 #' Complete suboptimal folding of RNA and the stability of secondary structures.
-#' Biopolymers, 49:145-165.
+#' Biopolymers, 49:145-165.}
 #'
 #' @export
 
@@ -128,23 +127,36 @@ predictStructure <- function (executable.path = "", fasta.file = "", rna.name = 
 #'
 #' @return Returns a list of RNA distance, ordered according to the input name sequence
 #'
-#' @examples
-#' dot <- predictDistance_RNADis(name = c("hsa-let-7b", "hsa-let-7a-2")
-#' , struct.ori = c("(((((.((((((((((((((((((((((((((((((.....))).)))).))).....)))))))))))))))))))))))))",
-#'           "(((((.((((((((((((((((((((((((((((((.....))).)))).))).....)))))))))))))))))))))))))")
-#' , struct.alt = c("(((((.(((((((((((((((((((..(((((((((.....)))))).).....))...))))))))))))))))))))))))",
-#'            "(((((.((((((((.(((((((((((((((((((((.....)))))).).))).....))))))))))).)))))))))))))"))
-#'
 #' @author Sijie Xu, \email{sijie.xu@mail.utoronto.ca}
 #'
 #' @references
-#'
-#' Lorenz, Ronny and Bernhart, Stephan H. and Höner zu Siederdissen, Christian and Tafer, Hakim and Flamm, Christoph and Stadler, Peter F. and Hofacker, Ivo L.
-#' ViennaRNA Package 2.0 Algorithms for Molecular Biology, 6:1 26, 2011, doi:10.1186/1748-7188-6-26
-#'
+#' {Lorenz, Ronny and Bernhart, Stephan H. and Höner zu Siederdissen, Christian and Tafer, Hakim and Flamm, Christoph and Stadler, Peter F. and Hofacker, Ivo L.
+#' ViennaRNA Package 2.0 Algorithms for Molecular Biology, 6:1 26, 2011, doi:10.1186/1748-7188-6-26}
+#' {Steipe B., ABC R Project, A Bioinformatics Course: Applied Bioinformatics http://steipe.biochemistry.utoronto.ca/abc/index.php/Bioinformatics_Main_Page}
 #'
 
 predictDistance_RNADis <- function(executable.path = "", name = c(), struct.ori = c(), struct.alt = c()){
+
+  #Helper Function that draw a progress bar in the console
+  #Referenced from ABC project (.utility 4.07) by Professor Steipe B. at University of Toronto
+  pBar <- function(i, l, nCh = 50) {
+    # i: the current iteration
+    # l: the total number of iterations
+    # nCh: width of the progress bar
+    ticks <- round(seq(1, l-1, length.out = nCh))
+    if (i < l) {
+      if (any(i == ticks)) {
+        p <- which(i == ticks)[1]  # use only first, in case there are ties
+        p1 <- paste(rep("#", p), collapse = "")
+        p2 <- paste(rep("-", nCh - p), collapse = "")
+        cat(sprintf("\r|%s%s|", p1, p2))
+        flush.console()
+      }
+    }
+    else { # done
+      cat("\n")
+    }
+  }
 
   #Create new folder to store temperary files
   dir.create("temp")
@@ -159,6 +171,8 @@ predictDistance_RNADis <- function(executable.path = "", name = c(), struct.ori 
   cat("Loading files..")
   for (i in seq(nrow(fasta))){
 
+    pBar(i, nrow(fasta))
+
     #Prepare file names for command line execution
     fa.filename <- paste("./temp/", i, ".fasta", sep="")
     dis.filename <- paste("./temp/", i, ".txt", sep="")
@@ -170,7 +184,7 @@ predictDistance_RNADis <- function(executable.path = "", name = c(), struct.ori 
     system(paste(executable.path, "-Xf < ", fa.filename, ">", dis.filename))
 
     #Read result from the dot file
-    dis <- scan(dis.filename, what="", sep="\n")[2]
+    dis <- suppressWarnings(suppressMessages(scan(dis.filename, what="", sep="\n", quiet = TRUE)))[2]
 
     #Load dot into dot list
     dis.list[i] <- substr(dis, 4, nchar(dis) - 2)
@@ -190,7 +204,7 @@ predictDistance_RNADis <- function(executable.path = "", name = c(), struct.ori 
 #' (Internal Function) Return list of calculated RNA distance using gscVisualizer
 #'
 #' Perform RNA distance calculation based on imported file or
-#' input of RNA orginal sequence and alternative sequence. The RNA
+#' input of RNA original sequence and alternative sequence. The RNA
 #' distance calculation is based on the gscVisualizer R package
 #' algorithm by Zhiwen Tan, a BCB student from UofT.
 #'
@@ -200,17 +214,10 @@ predictDistance_RNADis <- function(executable.path = "", name = c(), struct.ori 
 #'
 #' @return Returns a list of RNA distance, ordered according to the input name sequence
 #'
-#' @examples
-#' dot <- predictDistance_gsc(name = c("hsa-let-7b", "hsa-let-7a-2")
-#' , struct.ori = c("(((((.((((((((((((((((((((((((((((((.....))).)))).))).....)))))))))))))))))))))))))",
-#'           "(((((.((((((((((((((((((((((((((((((.....))).)))).))).....)))))))))))))))))))))))))")
-#' , struct.alt = c("(((((.(((((((((((((((((((..(((((((((.....)))))).).....))...))))))))))))))))))))))))",
-#'            "(((((.((((((((.(((((((((((((((((((((.....)))))).).))).....))))))))))).)))))))))))))"))
-#'
 #' @author Sijie Xu, \email{sijie.xu@mail.utoronto.ca}
 #'
 #' @references
-#' Z Tan (2020). gscVisualizer: Visualize The Difference among Gene Sequences. R package version 0.1.0.
+#' {Z Tan (2020). gscVisualizer: Visualize The Difference among Gene Sequences. R package version 0.1.0.}
 #'
 #' @importFrom gscVisualizer dotComp
 
@@ -268,9 +275,8 @@ predictDistance_gsc <- function(name = c(), struct.ori = c(), struct.alt = c()){
 #' @author Sijie Xu, \email{sijie.xu@mail.utoronto.ca}
 #'
 #' @references
-#'
-#' Lorenz, Ronny and Bernhart, Stephan H. and Höner zu Siederdissen, Christian and Tafer, Hakim and Flamm, Christoph and Stadler, Peter F. and Hofacker, Ivo L.
-#' ViennaRNA Package 2.0 Algorithms for Molecular Biology, 6:1 26, 2011, doi:10.1186/1748-7188-6-26
+#' {Lorenz, Ronny and Bernhart, Stephan H. and Höner zu Siederdissen, Christian and Tafer, Hakim and Flamm, Christoph and Stadler, Peter F. and Hofacker, Ivo L.
+#' ViennaRNA Package 2.0 Algorithms for Molecular Biology, 6:1 26, 2011, doi:10.1186/1748-7188-6-26}
 #'
 #' @export
 #'
@@ -300,13 +306,14 @@ predictDistance <- function(executable.path = "", name = c(), struct.ori = c(), 
       executable.path = "RNADistance"
     }
 
-    return(rseAnalysis::predictDistance_RNADis(executable.path, name, struct.ori, struct.alt))
+    return(predictDistance_RNADis(executable.path, name, struct.ori, struct.alt))
 
   } else { #If method selection is gscVisualizer
 
-    return(rseAnalysis::predictDistance_gsc(name, struct.ori, struct.alt))
+    return(predictDistance_gsc(name, struct.ori, struct.alt))
 
   }
 }
 
 
+# [END]

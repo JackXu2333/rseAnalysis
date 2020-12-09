@@ -1,7 +1,7 @@
 Introduction to rseAnalysis package
 ================
 Sijie Xu
-05 Dec 2020
+08 Dec 2020
 
 ## Introduction
 
@@ -216,12 +216,36 @@ expression <- read.csv(system.file("extdata", "test.csv", package = "rseAnalysis
 #Use only standardize read
 expression <- subset(expression, Read.Type == "reads_per_million_miRNA_mapped")[1:200, ]
 
-Analysis.DISEXP(dis.name = RNA.mutated$NAME, dis.distance = RNA.distance, 
-                exp.tumor <- expression$Sample, exp.sample <- expression$Normal, method = "linear", seperate = TRUE)
+result <- Analysis.DISEXP(dis.name = RNA.mutated$NAME, dis.distance = RNA.distance, 
+                exp.tumor = expression$Sample, exp.sample = expression$Normal, method = "linear", showPlot = FALSE)
+
+#Display statistical result
+result$stats
+#> $Correlation
+#> [1] -0.1062221
+#> 
+#> $PValue
+#> [1] 0.1343854
+
+#Display plots
+result$plots
+#> $ScatterPlot
 ```
 
 <img src="figuresanalysis-1.png" width="100%" />
 
+    #> 
+    #> $GeneExpressionBoxPlot
+
+<img src="figuresanalysis-2.png" width="100%" />
+
+    #> 
+    #> $RNADistanceBoxPlot
+
+<img src="figuresanalysis-3.png" width="100%" />
+
+    #> 
+    #> $RNADistanceDensityPlot
     #> Warning: Groups with fewer than two data points have been dropped.
     
     #> Warning: Groups with fewer than two data points have been dropped.
@@ -241,10 +265,29 @@ Analysis.DISEXP(dis.name = RNA.mutated$NAME, dis.distance = RNA.distance,
     #> Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning -
     #> Inf
 
-<img src="figuresanalysis-2.png" width="100%" /><img src="figuresanalysis-3.png" width="100%" /><img src="figuresanalysis-4.png" width="100%" />
+<img src="figuresanalysis-4.png" width="100%" />
 
-    #>          correlation   p_value
-    #> distance  -0.1062221 0.1343854
+    #> 
+    #> $GeneExpressionDensityPlot
+    #> Warning: Groups with fewer than two data points have been dropped.
+    #> Warning: Groups with fewer than two data points have been dropped.
+    
+    #> Warning: Groups with fewer than two data points have been dropped.
+    
+    #> Warning: Groups with fewer than two data points have been dropped.
+    #> Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning -
+    #> Inf
+    
+    #> Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning -
+    #> Inf
+    
+    #> Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning -
+    #> Inf
+    
+    #> Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning -
+    #> Inf
+
+<img src="figuresanalysis-5.png" width="100%" />
 
 Analysis.DISEXP uses the absolute difference in expression in modelling
 change in expression between the tumour and normal samples from BRCA
